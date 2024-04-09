@@ -1,30 +1,26 @@
 
 module.exports = (sequelize,Sequelize) =>{
-    const UserAddress = sequelize.define("user_address",{
-        user_address_id: {
+    const UserFamily = sequelize.define("user_address",{
+        user_family_id: {
             allowNull: false,
             type: Sequelize.INTEGER,
             autoIncrement: true,
             primaryKey: true
           },
-         address1: {
+         gardian_name: {
            allowNull: false,
            type: Sequelize.STRING
          },
-         address2: {
+         mother_name: {
            allowNull: false,
            type: Sequelize.STRING
          },
-         city:{
-           allowNull: true,
+         gardian_occupation:{
+           allowNull: false,
            type:Sequelize.STRING
          },
-         state:{
-          allowNull: true,
-          type:Sequelize.STRING
-        },
-        country:{
-          allowNull: true,
+         mother_occupation:{
+          allowNull: false,
           type:Sequelize.STRING
         },
         user_id:{
@@ -36,5 +32,5 @@ module.exports = (sequelize,Sequelize) =>{
         timestamps: false,
       }
     );
-    return UserAddress;
+    return UserFamily;
 }
