@@ -1,0 +1,128 @@
+{
+	"info": {
+		"_postman_id": "d2914efb-43ca-4005-8258-cffaba906f65",
+		"name": "user_project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "33285105"
+	},
+	"item": [
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"try {\r",
+							"    const responseBody = pm.response.json();\r",
+							"\r",
+							"    const token = responseBody.token;\r",
+							"\r",
+							"    pm.environment.set('token', token);\r",
+							"} \r",
+							"catch (error) {\r",
+							"    console.error('Error parsing response body:', error);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email_id\" : \"admin@gmail.com\",\r\n    \"password\" : \"Admin@123\"\r\n}\r\n\r\n// {\r\n//     \"email_id\" : \"aaa@gmail.com\",\r\n//     \"password\" : \"Password@123\"\r\n// }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{url}}{{user}}/login"
+			},
+			"response": []
+		},
+		{
+			"name": "welcome",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{token}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "{{url}}{{user}}/welcome"
+			},
+			"response": []
+		},
+		{
+			"name": "user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{url}}{{user_detail}}/get-allusers"
+			},
+			"response": []
+		},
+		{
+			"name": "user-id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{url}}{{user_detail}}/get-user-by-id/12"
+			},
+			"response": []
+		},
+		{
+			"name": "user-details-register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email_id\":\"inbasuba@gmail.com\",\r\n    \"password\": \"Password@123\",\r\n    \"first_name\": \"suba\",\r\n    \"last_name\": \"inba\",\r\n    \"gender\": \"female\",\r\n    \"d_o_b\": \"2001-01-04\",\r\n    \"address\": {\r\n        \"address1\": \"1659 ewsb\",\r\n        \"address2\": \"tnhb colon,villapuram\",\r\n        \"city\": \"Madurai\",\r\n        \"state\": \"Tamil nadu\",\r\n        \"country\": \"India\"\r\n    },\r\n    \"family_details\":{\r\n        \"gardian_name\": \"inba\",\r\n        \"mother_name\": \"kane\",\r\n        \"gardian_occupation\": \"off\",\r\n        \"mother_occupation\": \"hw\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{url}}{{user}}/register"
+			},
+			"response": []
+		},
+		{
+			"name": "user-details-update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"first_name\": \"is\",\r\n    \"last_name\": \"insu\",\r\n    \"address\": {\r\n        \"address1\": \" sy\",\r\n        \"address2\": \" ,villapuram\",\r\n        \"city\": \"Madurai\",\r\n        \"state\": \"Tamil nadu\",\r\n        \"country\": \"India\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{url}}{{user_detail}}/update-user/12"
+			},
+			"response": []
+		},
+		{
+			"name": "delete - user by id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "{{url}}{{user_detail}}/delete-user-by-id/3"
+			},
+			"response": []
+		}
+	]
+}
