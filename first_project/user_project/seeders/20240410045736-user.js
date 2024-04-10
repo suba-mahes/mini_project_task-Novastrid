@@ -17,6 +17,7 @@ module.exports = {
         first_name: "admin",
         last_name: "admin",
         gender: "female",
+        image: "node_js/mini_project_task-Novastrid/first_project/user_project/file_images/admin_admin.jpg",
         d_o_b: new Date('1990-01-01')
       },
       {
@@ -27,6 +28,7 @@ module.exports = {
         first_name: "aaa",
         last_name: "bbb",
         gender: "female",
+        image: "node_js/mini_project_task-Novastrid/first_project/user_project/file_images/Marina-aaa.jpg",
         d_o_b: new Date('2001-01-01')
       },
     ], { returning: true });

@@ -44,6 +44,10 @@ module.exports = {
       allowNull: false,
       type: Sequelize.DATE
      },
+     image: {
+      type: DataTypes.BLOB,
+      allowNull: false
+      },
     }
   );
 

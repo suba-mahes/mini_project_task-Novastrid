@@ -39,7 +39,11 @@ module.exports = (sequelize,Sequelize) =>{
          d_o_b:{
           allowNull: false,
           type: Sequelize.DATE
-         }
+         },
+         image: {
+          type: DataTypes.BLOB,
+          allowNull: false
+      }
         }, 
         {
           timestamps: false,

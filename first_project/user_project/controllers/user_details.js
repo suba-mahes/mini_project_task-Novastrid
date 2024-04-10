@@ -16,7 +16,8 @@ exports.register = async(req, res) => {
     const hashed_password = await bcrypt.hash(user_data.password,10);
     user_data.password = hashed_password;
     user_data.role = 0;
-    user_data.is_active = 1
+    user_data.is_active = 1;
+    user_data.image = req.file.buffer;;
 
     const check_data = await user.findOne({
         where: {
