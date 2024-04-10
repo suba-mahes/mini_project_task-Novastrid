@@ -64,6 +64,11 @@ module.exports.welcome = async(req,res) =>{
                     }
                 ],
             });
+            
+            for(val of data){
+                val.image =val.image.toString('base64')
+            }
+            
             display.end_result(res,200,data);  
             return;
         }

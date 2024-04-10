@@ -5,10 +5,7 @@ const storage = multer.diskStorage({
     cb(null, '../user_project/file_images');
   },
   filename: function (req, file, cb) {
-    const name = file.originalname;
-    const mail = req.body.email_id.split('@');
-    const filename = `${mail[0]}_${name}`;
-    cb(null, filename);
+    cb(null, Date.now() + '-' + file.originalname)
   }
 });
 

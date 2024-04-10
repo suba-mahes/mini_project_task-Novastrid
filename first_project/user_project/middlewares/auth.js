@@ -17,7 +17,7 @@ module.exports.login = (req, res, next)=>{
 }
 
 module.exports.reqister = (req, res, next)=>{
-    const { error, value } =  register.user_details_data_schema.validate(req.body, { abortEarly: false });
+    const { error, value } =  register.user_details_data_schema.validate(req.body.data, { abortEarly: false });
     
     if(error){
         display.end_result(res,500,{"message": error.details.map(detail => detail.message)});

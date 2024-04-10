@@ -45,7 +45,7 @@ module.exports = {
       type: Sequelize.DATE
      },
      image: {
-      type: DataTypes.BLOB,
+      type: Sequelize.BLOB,
       allowNull: false
       },
     }

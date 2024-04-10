@@ -11,13 +11,13 @@ var display = require("../controllers/result_display.js");
 
 exports.register = async(req, res) => {
   try{
-    const user_data = req.body;
-
+    const user_data = JSON.parse(req.body.data);
     const hashed_password = await bcrypt.hash(user_data.password,10);
     user_data.password = hashed_password;
     user_data.role = 0;
     user_data.is_active = 1;
-    user_data.image = req.file.buffer;;
+    
+    user_data.image = req.file.path;
 
     const check_data = await user.findOne({
         where: {
@@ -50,8 +50,9 @@ exports.register = async(req, res) => {
     const responseData = { ...data.get({ plain: true }) };
     const { password, role, ...new_data } = responseData;
     if(new_data){
-        display.end_result(res,200,new_data);
-      }
+      new_data.image = new_data.image.toString('base64')
+      display.end_result(res,200,new_data);
+    }
     else{
         display.end_result(res,404,{"message":"registeration failed"});
       }
