@@ -7,7 +7,7 @@ exports.user_details_data_schema = Joi.object({
     "string.empty" : "email cannot be empty",
     "string.email" : "some thing is missing in email format",
   }),
-  password: Joi.string().min(8).pattern(new RegExp('^[a-zA-Z0-9]{3,10}$')).required().messages({
+  password: Joi.string().min(8).pattern(new RegExp('^[a-zA-Z0-9@]{3,30}$')).required().messages({
     "any.required" : "password is required",
     "string.empty" : "password cannot be empty",
     "string.min" : "password must be atleast 8 character",

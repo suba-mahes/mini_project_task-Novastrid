@@ -1,9 +1,65 @@
+const bcrypt = require('bcrypt');
+
 const db = require("../models/index.js");
 const user = db.user;
 const user_address = db.user_address;
+const user_family = db.user_family;
 
 
 var display = require("../controllers/result_display.js");
+
+
+exports.register = async(req, res) => {
+  try{
+    const user_data = req.body;
+
+    const hashed_password = await bcrypt.hash(user_data.password,10);
+    user_data.password = hashed_password;
+    user_data.role = 0;
+    user_data.is_active = 1
+
+    const check_data = await user.findOne({
+        where: {
+          email_id : user_data.email_id,
+        },
+    });
+  
+    if(check_data){
+        display.end_result(res,200,{'message':"Already registerd email_id"});
+        return;
+    }
+
+    const data = await user.create(user_data,
+      {
+        include: [
+          {
+            model: user_address, 
+            as: 'address',
+            required: true
+          },
+          {
+            model: user_family,
+            as: 'family_details', 
+            required: true
+          }
+        ],
+      }
+    );
+
+    const responseData = { ...data.get({ plain: true }) };
+    const { password, role, ...new_data } = responseData;
+    if(new_data){
+        display.end_result(res,200,new_data);
+      }
+    else{
+        display.end_result(res,404,{"message":"registeration failed"});
+      }
+  }
+  catch(err){
+    display.end_result(res,err.status  || 500,{"message": err.message || "Some error occurred while creating the user."})
+  }
+};
+
 
 exports.findAll = async(req,res) => {
   try{
@@ -52,37 +108,6 @@ exports.findID = async(req,res) => {
   }
 };
 
-exports.create = async(req, res) => {
-  try{
-    // Create a user
-    const user_data = req.body
-    user_data.createdAt = new Date().toJSON().slice(0, 10);
-    user_data.updatedAt = new Date().toJSON().slice(0, 10);
-
-    const user_adress_data = req.body.address;
-    user_adress_data.createdAt= new Date().toJSON().slice(0, 10);
-    user_adress_data.updatedAt= new Date().toJSON().slice(0, 10);
-    
-    // Save user in the database
-    const data = await user.create({
-      ...user_data,
-      //user_address:{...user_adress_data,user_id:user_data.user_id}
-      user_address: user_adress_data
-    },
-    {
-      include: [user_address]
-    });
-    if(data){
-        display.end_result(res,200,data);
-      }
-      else{
-        display.end_result(res,404,{"message":"insertion failed at address table"});
-      }
-  }
-  catch(err){
-    display.end_result(res,err.status  || 500,{"message": err.message || "Some error occurred while creating the user."})
-  }
-};
 
 exports.update = async(req,res) =>{
   try{
