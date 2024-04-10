@@ -50,7 +50,8 @@ exports.register = async(req, res) => {
     const responseData = { ...data.get({ plain: true }) };
     const { password, role, ...new_data } = responseData;
     if(new_data){
-      new_data.image = new_data.image.toString('base64')
+      //new_data.image = new_data.image.toString('base64')
+      new_data.image = new_data.image.toString();
       display.end_result(res,200,new_data);
     }
     else{
@@ -65,13 +66,40 @@ exports.register = async(req, res) => {
 
 exports.findAll = async(req,res) => {
   try{
-    const data = await user.findAll({include: user_address});
-    if(data){
+    const req_data = req.data;
+    
+    if(req_data.role == 1){
+      const data = await user.findAll({
+          attributes: { exclude: ['password','role'] },
+          where : {
+              role : 0,
+          },
+          include: [
+              {
+              model: user_address, 
+              as: 'address',
+              required: true
+              },
+              {
+              model: user_family,
+              as: 'family_details', 
+              required: true
+              }
+          ],
+      });
+      
+      for(val of data){
+          val.image =val.image.toString()
+          //val.image =val.image.toString('base64')
+      }
+      
       display.end_result(res,200,data);  
-    }
-    else{
-      display.end_result(res,200,{'user': data, 'message': 'table is empty'});
       return;
+    }
+    
+    else{
+        display.end_result(res,200,{"message": "you do not have access for this page"});  
+        return;
     }
   }
   catch(err){
@@ -82,27 +110,52 @@ exports.findAll = async(req,res) => {
 
 exports.findID = async(req,res) => {
   try{
-    let id = parseInt(req.params.id); 
+    const req_data = req.data;
 
-    if(!id){
-      display.end_result(res,404,{"message":'parameter is empty'});  
-      return;
-    }
+    if(req_data.role == 1){
+      let id = parseInt(req.params.id); 
 
-    const data = await user.findOne({
-      where: {
-        user_id : id,
-      },
-      include : user_address
-    });
-
-    if(data){
-      display.end_result(res,200,data);  
-      return;
-    }
-    else{
+      if(!id){
+        display.end_result(res,404,{"message":'parameter is empty'});  
+        return;
+      }
+      
+      const data = await user.findOne({
+          attributes: { exclude: ['password','role'] },
+          where : {
+              user_id : id
+          },
+          include: [
+              {
+              model: user_address, 
+              as: 'address',
+              required: true
+              },
+              {
+              model: user_family,
+              as: 'family_details', 
+              required: true
+              }
+          ],
+      });
+      
+      if(data){ 
+        data.image =data.image.toString()
+        //data.image =data.image.toString('base64')
+      
+        display.end_result(res,200,data);  
+        return;
+      }
+      
+      else{
         display.end_result(res,404,{"message":'user is not found'});  
         return;
+      }
+    }
+    
+    else{      
+      display.end_result(res,200,{"message": "you do not have access for this page"});  
+      return;
     }
   }
   catch(err){
@@ -182,37 +235,3 @@ exports.deleteByID = async(req,res) =>{
         display.end_result(res,err.status  || 500,{"message": err.message || "Some error occurred while deleting the user."})
   }
 };
-
-// module.exports.register = async(req,res) =>{
-//   try{
-//       const user_data = req.body;
-//       const hashed_password = await bcrypt.hash(user_data.password,10);
-//       user_data.password = hashed_password;
-
-//       const data = await auth.findOne({
-//           where: {
-//             email_id : user_data.email_id,
-//           },
-//       });
-    
-//       if(data){
-//           display.end_result(res,200,{'message':"Already registerd email_id"});
-//           return;
-//       }
-      
-//       const auth_data = await auth.create({...user_data});
-
-//       if(auth_data){
-          
-//           const token = jwt.sign({ auth_id: auth_data.auth_id,email_id :auth_data.email_id }, secret_key, { expiresIn: '1h' });
-
-//           display.end_result(res,200,{'message':"registered successfully" , 'token':token});
-//       }
-//       else{
-//           display.end_result(res,404,{"message":"registeration failed"});
-//       }
-//   }
-//   catch(error){
-//       display.end_result(res,500,{"message": error.message})
-//   }
-// };

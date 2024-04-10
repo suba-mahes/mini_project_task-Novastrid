@@ -11,9 +11,8 @@ router.post('/login',auth_validation.login, auth.login);
 router.get('/welcome', auth_validation.authenticate_token, auth.welcome);
 
 router.post('/register', auth_validation.reqister, upload.single('image'), users_detail.register);
-// router.get('/get-allusers',auth_validation.authenticate_token,users_detail.findAll);
-// router.get('/get-user-by-id/:id',auth_validation.authenticate_token,users_detail.findID);
-// router.post('/insert-user', validation.validation_user_detail, users_detail.create);
+router.get('/get-allusers',auth_validation.authenticate_token,users_detail.findAll);
+router.get('/get-user-by-id/:id',auth_validation.authenticate_token,users_detail.findID);
 // router.put('/update-user/:id',auth_validation.authenticate_token, users_detail.update);
 // router.delete('/delete-user-by-id/:id',auth_validation.authenticate_token,users_detail.deleteByID);
 
