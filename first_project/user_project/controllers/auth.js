@@ -2,7 +2,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const db = require("../models/index.js");
-const auth = db.auth;
 const user = db.user;
 const user_address = db.user_address;
 const user_family = db.user_family;

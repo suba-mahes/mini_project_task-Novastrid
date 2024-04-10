@@ -30,8 +30,6 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 
-db.auth = require("./auth.js")(sequelize,Sequelize);
-
 db.user = require("./user_model.js")(sequelize,Sequelize);
 db.user_address = require("./user_address_model.js")(sequelize,Sequelize);
 db.user_family = require("./user_family_model.js")(sequelize,Sequelize);
