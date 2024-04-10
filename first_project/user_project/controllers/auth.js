@@ -47,7 +47,19 @@ module.exports.welcome = async(req,res) =>{
         const req_data = req.data;
 
         if(req_data.role == 1){
-            const data = await user.findAll({include: [user_address,user_family]});
+            const data = await user.findAll({include: [
+                {
+                  model: user_address, 
+                  as: 'address', 
+                  required: true
+                },
+                {
+                  model: user_family, 
+                  as: 'family_details',
+                  required: true
+                }
+              ]
+            });
             display.end_result(res,200,data);  
             return;
         }
