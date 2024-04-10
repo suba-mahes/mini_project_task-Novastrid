@@ -14,7 +14,7 @@ module.exports.login = async(req,res) =>{
     try{
         const user_data = req.body;
 
-        const data = await auth.findOne({
+        const data = await user.findOne({
             where: {
                 email_id : user_data.email_id,
             },
@@ -28,7 +28,7 @@ module.exports.login = async(req,res) =>{
                 return;
             }
             
-            const token = jwt.sign({ auth_id: data.auth_id, email_id:data.email_id, role:data.role }, secret_key, { expiresIn: '1h' });
+            const token = jwt.sign({ email_id:data.email_id, role:data.role }, secret_key, { expiresIn: '1h' });
             
             display.end_result(res,200,{'message':"logged in successfully" ,'token':token});
         }
@@ -47,16 +47,23 @@ module.exports.welcome = async(req,res) =>{
         const req_data = req.data;
 
         if(req_data.role == 1){
-            const data = await user.findAll({include: [
-                {
-                  model: user_address, 
-                  required: true
+            const data = await user.findAll({
+                attributes: { exclude: ['password','role'] },
+                where : {
+                    role : 0,
                 },
-                {
-                  model: user_family, 
-                  required: true
-                }
-              ]
+                include: [
+                    {
+                    model: user_address, 
+                    as: 'address',
+                    required: true
+                    },
+                    {
+                    model: user_family,
+                    as: 'family_details', 
+                    required: true
+                    }
+                ],
             });
             display.end_result(res,200,data);  
             return;

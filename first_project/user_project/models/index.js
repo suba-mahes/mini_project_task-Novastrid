@@ -36,10 +36,10 @@ db.user = require("./user_model.js")(sequelize,Sequelize);
 db.user_address = require("./user_address_model.js")(sequelize,Sequelize);
 db.user_family = require("./user_family_model.js")(sequelize,Sequelize);
 
-db.user.hasOne(db.user_address,{foreignKey: 'user_id'});
+db.user.hasOne(db.user_address,{foreignKey: 'user_id', as:'address'});
 db.user_address.belongsTo(db.user, { foreignKey: 'user_id' });
 
-db.user.hasOne(db.user_family,{foreignKey: 'user_id'});
+db.user.hasOne(db.user_family,{foreignKey: 'user_id', as:'family_details'});
 db.user_family.belongsTo(db.user, { foreignKey: 'user_id' });
 
 

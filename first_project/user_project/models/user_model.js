@@ -11,6 +11,19 @@ module.exports = (sequelize,Sequelize) =>{
             allowNull: false,
             type: Sequelize.BOOLEAN
           },
+          role: {
+            allowNull: false,
+            type: Sequelize.BOOLEAN
+          },
+          email_id:{
+            allowNull: true,
+            type:Sequelize.STRING,
+            unique: true
+          },
+          password: {
+            type: Sequelize.STRING,
+            allowNull: false
+          },
          first_name: {
            allowNull: false,
            type: Sequelize.STRING
@@ -18,11 +31,6 @@ module.exports = (sequelize,Sequelize) =>{
          last_name: {
            allowNull: true,
            type: Sequelize.STRING
-         },
-         email_id:{
-           allowNull: false,
-           type:Sequelize.STRING,
-           unique: true
          },
          gender:{
           allowNull: false,

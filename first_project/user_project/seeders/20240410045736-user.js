@@ -1,6 +1,8 @@
 'use strict';
 
 /** @type {import('sequelize-cli').Migration} */
+const bcrypt = require('bcrypt');
+
 const db = require("../models/index");
 const user_model = db.user;
 
@@ -9,12 +11,24 @@ module.exports = {
     const users = await user_model.bulkCreate([
       {
         is_active:1,
-        first_name: "aaa",
-        last_name: "bbb",
-        email_id: "aaa@gmail.com",
+        role: 1,
+        email_id:"admin@gmail.com",
+        password: await bcrypt.hash("Admin@123",10),
+        first_name: "admin",
+        last_name: "admin",
         gender: "female",
         d_o_b: new Date('1990-01-01')
-      }
+      },
+      {
+        is_active:1,
+        role: 0,
+        email_id:"aaa@gmail.com",
+        password: await bcrypt.hash("Password@123",10),
+        first_name: "aaa",
+        last_name: "bbb",
+        gender: "female",
+        d_o_b: new Date('2001-01-01')
+      },
     ], { returning: true });
 
     const userIds = users.map(user => user.user_id);
@@ -26,7 +40,7 @@ module.exports = {
         city: "madu",
         state: "TN",
         country: "Ind",
-        user_id: userIds[0] 
+        user_id: userIds[1] 
       }
     ]);
 
@@ -36,7 +50,7 @@ module.exports = {
         mother_name: "kane",
         gardian_occupation: "off",
         mother_occupation: "hw",
-        user_id: userIds[0]
+        user_id: userIds[1]
       }
     ]);
   },
