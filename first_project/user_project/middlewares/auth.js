@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 var secret_key = require("../config/config_auth.js");
 var login = require("../validation/login.js")
 var register = require('../validation/user_detail_schema.js')
-var display = require("../controller/result_display.js");
+var display = require("../controllers/result_display.js");
 
 
 module.exports.login = (req, res, next)=>{

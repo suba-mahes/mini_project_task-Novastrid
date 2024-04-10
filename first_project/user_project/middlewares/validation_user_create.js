@@ -1,6 +1,6 @@
-var user_schema = require("../validation/joi/user_schema.js")
-var user_detail_schema = require('../validation/joi/user_detail_schema.js')
-var display = require("../controller/result_display.js");
+//var user_schema = require("../validation/user_schema.js")
+var user_detail_schema = require('../validation/user_detail_schema.js')
+var display = require("../controllers/result_display.js");
 
 
 module.exports.validation_user = (req, res, next)=>{

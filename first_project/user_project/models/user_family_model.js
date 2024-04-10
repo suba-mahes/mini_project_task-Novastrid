@@ -1,6 +1,6 @@
 
 module.exports = (sequelize,Sequelize) =>{
-    const UserFamily = sequelize.define("user_address",{
+    const UserFamily = sequelize.define("user_family",{
         user_family_id: {
             allowNull: false,
             type: Sequelize.INTEGER,

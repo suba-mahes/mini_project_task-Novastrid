@@ -31,7 +31,7 @@ exports.user_details_data_schema = Joi.object({
     "any.required" : "gender is required",
     "string.empty" : "gender cannot be empty",
   }),
-  d_o_b: Joi.date().format('YYYY-MM-DD').max('now').required().messages({
+  d_o_b: Joi.date().iso().max('now').required().messages({
     "any.required" : "date of birth is required",
     "date.empty" : "date of birth cannot be empty",
     "date.format" : "missing date format",

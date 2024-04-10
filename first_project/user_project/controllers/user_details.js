@@ -1,9 +1,9 @@
-const db = require("../model/index.js");
+const db = require("../models/index.js");
 const user = db.user;
 const user_address = db.user_address;
 
 
-var display = require("../controller/result_display.js");
+var display = require("../controllers/result_display.js");
 
 exports.findAll = async(req,res) => {
   try{

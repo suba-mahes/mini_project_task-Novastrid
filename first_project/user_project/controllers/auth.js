@@ -1,13 +1,13 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const db = require("../model/index.js");
+const db = require("../models/index.js");
 const auth = db.auth;
 const user = db.user;
 const user_address = db.user_address;
 const user_family = db.user_family;
 
-var display = require("../result_display.js");
+var display = require("../controllers/result_display.js");
 var secret_key = require("../config/config_auth.js");
 
 module.exports.login = async(req,res) =>{
@@ -50,12 +50,10 @@ module.exports.welcome = async(req,res) =>{
             const data = await user.findAll({include: [
                 {
                   model: user_address, 
-                  as: 'address', 
                   required: true
                 },
                 {
                   model: user_family, 
-                  as: 'family_details',
                   required: true
                 }
               ]

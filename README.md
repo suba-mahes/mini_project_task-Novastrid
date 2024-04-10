@@ -7,9 +7,9 @@ npm install express sequelize mysql2 body-parser cors --save
 
 npm install express-fileupload multer
 
-npm install bcrypt
+npm install bcrypt jsonwebtoken
 
-npm install jsonwebtoken
+npm install joi
 
 npm install --save-dev sequelize-cli
 
