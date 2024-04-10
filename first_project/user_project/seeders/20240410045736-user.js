@@ -8,6 +8,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     const users = await user_model.bulkCreate([
       {
+        is_active:1,
         first_name: "aaa",
         last_name: "bbb",
         email_id: "aaa@gmail.com",
