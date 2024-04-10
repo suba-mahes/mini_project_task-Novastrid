@@ -25,7 +25,7 @@ module.exports = {
         city: "madu",
         state: "TN",
         country: "Ind",
-        user_id: userIds[0] // Assuming there's only one user created
+        user_id: userIds[0] 
       }
     ]);
 
@@ -35,7 +35,7 @@ module.exports = {
         mother_name: "kane",
         gardian_occupation: "off",
         mother_occupation: "hw",
-        user_id: userIds[0] // Assuming there's only one user created
+        user_id: userIds[0]
       }
     ]);
   },

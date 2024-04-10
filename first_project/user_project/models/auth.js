@@ -11,10 +11,6 @@ module.exports = (sequelize,Sequelize) =>{
         allowNull: false,
         type: Sequelize.BOOLEAN
       },
-      is_active: {
-        allowNull: false,
-        type: Sequelize.BOOLEAN
-      },
       email_id:{
         allowNull: true,
         type:Sequelize.STRING,

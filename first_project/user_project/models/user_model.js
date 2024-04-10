@@ -7,6 +7,10 @@ module.exports = (sequelize,Sequelize) =>{
             autoIncrement: true,
             primaryKey: true
           },
+          is_active: {
+            allowNull: false,
+            type: Sequelize.BOOLEAN
+          },
          first_name: {
            allowNull: false,
            type: Sequelize.STRING

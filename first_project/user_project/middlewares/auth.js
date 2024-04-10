@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 var secret_key = require("../config/config_auth.js");
 var login = require("../validation/login.js")
-var register = require('../validation/register.js')
+var register = require('../validation/user_detail_schema.js')
 var display = require("../controller/result_display.js");
 
 
@@ -17,7 +17,7 @@ module.exports.login = (req, res, next)=>{
 }
 
 module.exports.reqister = (req, res, next)=>{
-    const { error, value } =  register.register_schema.validate(req.body, { abortEarly: false });
+    const { error, value } =  register.user_details_data_schema.validate(req.body, { abortEarly: false });
     
     if(error){
         display.end_result(res,500,{"message": error.details.map(detail => detail.message)});
@@ -40,7 +40,7 @@ module.exports.authenticate_token = (req, res, next)=>{
             display.end_result(res,403,{"message": "Token is not valid"});
             return;
         }
-        req.email_id = decoded.email_id;
+        req.data = decoded;
         next();
     });
 }

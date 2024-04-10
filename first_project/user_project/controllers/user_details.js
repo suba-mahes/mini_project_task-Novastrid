@@ -156,13 +156,36 @@ exports.deleteByID = async(req,res) =>{
   }
 };
 
+// module.exports.register = async(req,res) =>{
+//   try{
+//       const user_data = req.body;
+//       const hashed_password = await bcrypt.hash(user_data.password,10);
+//       user_data.password = hashed_password;
 
-// function EndResult(res,res_status,result)
-// {
-//     res.format({
-//       "application/json"(){
-//         res.status(res_status);
-//         res.json(result);
+//       const data = await auth.findOne({
+//           where: {
+//             email_id : user_data.email_id,
+//           },
+//       });
+    
+//       if(data){
+//           display.end_result(res,200,{'message':"Already registerd email_id"});
+//           return;
 //       }
-//     })
-// } 
+      
+//       const auth_data = await auth.create({...user_data});
+
+//       if(auth_data){
+          
+//           const token = jwt.sign({ auth_id: auth_data.auth_id,email_id :auth_data.email_id }, secret_key, { expiresIn: '1h' });
+
+//           display.end_result(res,200,{'message':"registered successfully" , 'token':token});
+//       }
+//       else{
+//           display.end_result(res,404,{"message":"registeration failed"});
+//       }
+//   }
+//   catch(error){
+//       display.end_result(res,500,{"message": error.message})
+//   }
+// };
