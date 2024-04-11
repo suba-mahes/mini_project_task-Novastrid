@@ -156,24 +156,6 @@ exports.update = async(req,res) =>{
     let id = parseInt(req.params.id);
     const user_data = req.body;
 
-    // if(!id){
-    //   display.end_result(res,404,{"message":'parameter is empty'});  
-    //   return;
-    // }
-
-    // if(req_data.role == 0){
-      
-    //   if(Object.keys(user_data).includes("is_active")){
-    //     display.end_result(res,403,{"message": "sorry you don't have the access to update these details"});
-    //     return;
-    //   }
-      
-    //   if(req_data.user_id != id){
-    //     display.end_result(res,403,{"message": "sorry you don't have the access to update other's details"});
-    //     return;
-    //   }
-    // }
-  
     const data = await user.findByPk(id,{
       attributes: { exclude: ['password','role'] },
       include: [
@@ -198,16 +180,17 @@ exports.update = async(req,res) =>{
       }
       
 
-      const { address, family_details, ...only_user_data } = user_data;
+//      const { address, family_details, ...only_user_data } = user_data;
 
-      await data.update(only_user_data);
-      if(Object.keys(user_data.address).length){
-        await data.address.update(address);
-      }
+      //await data.update(only_user_data);
+      await data.update(data);
+      // if(Object.keys(user_data.address).length){
+      //   await data.address.update(address);
+      // }
 
-      if(Object.keys(user_data.family_details).length){
-        await data.family_details.update(family_details);
-      }
+      // if(Object.keys(user_data.family_details).length){
+      //   await data.family_details.update(family_details);
+      // }
       
       await data.save();
       //const result = await user.findByPk(id,{ include : user_address });
@@ -229,17 +212,7 @@ exports.deleteByID = async(req,res) =>{
     const req_data = req.data;
     let id = parseInt(req.params.id);
 
-    // if(!id){
-    //   display.end_result(res,404,{"message":'parameter is empty'});  
-    //   return;
-    // }
-    
-    // if(req_data.role == 0 && req_data.user_id != id){
-    //   display.end_result(res,403,{"message": "sorry you don't have the access to delete other's details"});
-    //   return;
-    // }
-
-    result = await user.findByPk(id)
+    result = await user.findByPk(id);
 
     if(result){
       if(req_data.role == 1 && req_data.user_id != result.user_id){

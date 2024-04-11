@@ -1,13 +1,14 @@
 const jwt = require('jsonwebtoken');
 
 var secret_key = require("../config/config_auth.js");
-var login = require("../validation/login.js")
+var auth = require("../validation/auth_schema.js")
 var register = require('../validation/user_detail_schema.js')
+
 var display = require("../controllers/result_display.js");
 
 
 module.exports.login = (req, res, next)=>{
-    const { error, value } =  login.login_schema.validate(req.body, { abortEarly: false });
+    const { error, value } =  auth.login_schema.validate(req.body, { abortEarly: false });
     
     if(error){
         display.end_result(res,500,{"message": error.details.map(detail => detail.message)});
@@ -18,6 +19,26 @@ module.exports.login = (req, res, next)=>{
 
 module.exports.reqister = (req, res, next)=>{
     const { error, value } =  register.user_details_data_schema.validate(req.body.data, { abortEarly: false });
+    
+    if(error){
+        display.end_result(res,500,{"message": error.details.map(detail => detail.message)});
+        return;
+    }
+    next();
+}
+
+module.exports.forget_password = (req, res, next)=>{
+    const { error, value } =  auth.forget_password_schema.validate(req.body, { abortEarly: false });
+    
+    if(error){
+        display.end_result(res,500,{"message": error.details.map(detail => detail.message)});
+        return;
+    }
+    next();
+}
+
+module.exports.reset_password = (req, res, next)=>{
+    const { error, value } =  auth.reset_password_schema.validate(req.body, { abortEarly: false });
     
     if(error){
         display.end_result(res,500,{"message": error.details.map(detail => detail.message)});
