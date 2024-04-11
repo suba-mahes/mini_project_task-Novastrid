@@ -241,3 +241,36 @@ exports.deleteByID = async(req,res) =>{
         display.end_result(res,err.status  || 500,{"message": err.message || "Some error occurred while deleting the user."})
   }
 };
+
+exports.update_status = async(req,res) =>{
+  try{
+    
+    const req_data = req.data;
+    let id = parseInt(req.params.id);
+    const user_data = req.body;
+
+    const data = await user.findByPk(id);
+    
+    if(data){
+      
+      if(data.role == 1 && req_data.role == 1 && req_data.user_id != data.user_id){
+        display.end_result(res,403,{"message": "sorry you don't have the access to update other's details"});
+        return;
+      }
+      
+
+
+      await data.update(data);
+      await data.save();
+      //const result = await user.findByPk(id,{ include : user_address });
+      data.image =data.image.toString()
+      display.end_result(res,200,{"message": "Updated sucessfully","updated_user":data});
+    }
+    else{
+      display.end_result(res,400,{"message": "user not found"});
+    }
+  }
+  catch(err){
+    display.end_result(res,err.status  || 500,{"message": err.message || "Some error occurred while updating the user."})
+  }
+};
