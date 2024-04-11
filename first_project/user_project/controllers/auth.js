@@ -27,7 +27,7 @@ module.exports.login = async(req,res) =>{
                 return;
             }
             
-            const token = jwt.sign({ email_id:data.email_id, role:data.role }, secret_key, { expiresIn: '1h' });
+            const token = jwt.sign({ email_id:data.email_id, role:data.role, user_id:data.user_id }, secret_key, { expiresIn: '1h' });
             
             display.end_result(res,200,{'message':"logged in successfully" ,'token':token});
         }

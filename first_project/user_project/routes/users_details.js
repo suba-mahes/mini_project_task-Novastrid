@@ -3,7 +3,8 @@ const users_detail = require('../controllers/user_details.js');
 var auth = require('../controllers/auth.js');
 
 var auth_validation = require('../middlewares/auth.js');
-var upload = require("../middlewares/multer_middleware.js")
+var upload = require("../middlewares/multer_middleware.js");
+var update_valdator = require("../validation/validation_for_update.js")
 
 var router = express.Router();
 
@@ -13,7 +14,7 @@ router.get('/welcome', auth_validation.authenticate_token, auth.welcome);
 router.post('/register', auth_validation.reqister, upload.single('image'), users_detail.register);
 router.get('/get-allusers',auth_validation.authenticate_token,users_detail.findAll);
 router.get('/get-user-by-id/:id',auth_validation.authenticate_token,users_detail.findID);
-// router.put('/update-user/:id',auth_validation.authenticate_token, users_detail.update);
+router.put('/update-user/:id', auth_validation.authenticate_token, update_valdator.update_validation, users_detail.update);
 // router.delete('/delete-user-by-id/:id',auth_validation.authenticate_token,users_detail.deleteByID);
 
 
