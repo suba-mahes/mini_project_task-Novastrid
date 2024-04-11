@@ -28,8 +28,14 @@ module.exports = {
       type:Sequelize.STRING
     },
     user_id:{
-      allowNull: false,
       type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'user',
+          key: 'user_id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
     },
     }
   );

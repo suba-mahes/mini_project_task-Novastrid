@@ -43,40 +43,33 @@ module.exports.login = async(req,res) =>{
 
 module.exports.welcome = async(req,res) =>{
     try{
-        const req_data = req.data;
 
-        if(req_data.role == 1){
-            const data = await user.findAll({
-                attributes: { exclude: ['password','role'] },
-                where : {
-                    role : 0,
+        const data = await user.findAll({
+            attributes: { exclude: ['password','role'] },
+            where : {
+                role : 0,
+            },
+            include: [
+                {
+                model: user_address, 
+                as: 'address',
+                required: true
                 },
-                include: [
-                    {
-                    model: user_address, 
-                    as: 'address',
-                    required: true
-                    },
-                    {
-                    model: user_family,
-                    as: 'family_details', 
-                    required: true
-                    }
-                ],
-            });
-            
-            for(val of data){
-                val.image =val.image.toString()
-                //val.image =val.image.toString('base64')
-            }
-            
-            display.end_result(res,200,data);  
-            return;
+                {
+                model: user_family,
+                as: 'family_details', 
+                required: true
+                }
+            ],
+        });
+        
+        for(val of data){
+            val.image =val.image.toString()
+            //val.image =val.image.toString('base64')
         }
-        else{
-            display.end_result(res,200,{"message": "you do not have access for this page"});  
-            return;
-        }          
+        
+        display.end_result(res,200,data);  
+        return;         
     }
     catch(error){
         display.end_result(res,500,{"message": error.message});

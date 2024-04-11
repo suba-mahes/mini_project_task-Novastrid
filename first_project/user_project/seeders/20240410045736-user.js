@@ -37,6 +37,14 @@ module.exports = {
 
     await queryInterface.bulkInsert('user_addresses', [
       {
+        address1: "a1 xyz",
+        address2: "aaa",
+        city: "mad",
+        state: "TN",
+        country: "Ind",
+        user_id: userIds[0] 
+      },
+      {
         address1: "9A muthu street",
         address2: "mathichiyam",
         city: "madu",
@@ -47,6 +55,13 @@ module.exports = {
     ]);
 
     await queryInterface.bulkInsert('user_families', [
+      {
+        gardian_name: "a",
+        mother_name: "b",
+        gardian_occupation: "off",
+        mother_occupation: "hw",
+        user_id: userIds[0]
+      },
       {
         gardian_name: "inba",
         mother_name: "kane",

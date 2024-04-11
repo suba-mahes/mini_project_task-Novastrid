@@ -66,41 +66,33 @@ exports.register = async(req, res) => {
 
 exports.findAll = async(req,res) => {
   try{
-    const req_data = req.data;
     
-    if(req_data.role == 1){
-      const data = await user.findAll({
-          attributes: { exclude: ['password','role'] },
-          where : {
-              role : 0,
-          },
-          include: [
-              {
-              model: user_address, 
-              as: 'address',
-              required: true
-              },
-              {
-              model: user_family,
-              as: 'family_details', 
-              required: true
-              }
-          ],
-      });
-      
-      for(val of data){
-          val.image =val.image.toString()
-          //val.image =val.image.toString('base64')
-      }
-      
-      display.end_result(res,200,data);  
-      return;
+    const data = await user.findAll({
+        attributes: { exclude: ['password','role'] },
+        where : {
+            role : 0,
+        },
+        include: [
+            {
+            model: user_address, 
+            as: 'address',
+            required: true
+            },
+            {
+            model: user_family,
+            as: 'family_details', 
+            required: true
+            }
+        ],
+    });
+    
+    for(val of data){
+        val.image =val.image.toString()
+        //val.image =val.image.toString('base64')
     }
     
-    else{
-        display.end_result(res,200,{"message": "you do not have access for this page"});  
-        return;
-    }
+    display.end_result(res,200,data);  
+    return;
   }
   catch(err){
     display.end_result(res,err.status || 500,{"message": err.message || "Some error occurred while retrieving users."})
@@ -112,55 +104,43 @@ exports.findID = async(req,res) => {
   try{
     const req_data = req.data;
 
-    if(req_data.role == 1){
-      let id = parseInt(req.params.id); 
-
-      if(!id){
-        display.end_result(res,404,{"message":'parameter is empty'});  
+    let id = parseInt(req.params.id); 
+    
+    const data = await user.findOne({
+        attributes: { exclude: ['password','role'] },
+        where : {
+            user_id : id
+        },
+        include: [
+            {
+            model: user_address, 
+            as: 'address',
+            required: true
+            },
+            {
+            model: user_family,
+            as: 'family_details', 
+            required: true
+            }
+        ],
+    });
+    
+    if(data){ 
+      
+      if(data.role == 1 && req_data.user_id != id){
+        display.end_result(res,403,{"message": "sorry you don't have the access to view other admins details"});
         return;
       }
       
-      const data = await user.findOne({
-          attributes: { exclude: ['password','role'] },
-          where : {
-              user_id : id
-          },
-          include: [
-              {
-              model: user_address, 
-              as: 'address',
-              required: true
-              },
-              {
-              model: user_family,
-              as: 'family_details', 
-              required: true
-              }
-          ],
-      });
-      
-      if(data){ 
-        
-        if(data.role == 1 && req_data.user_id != id){
-          display.end_result(res,403,{"message": "sorry you don't have the access to view other admins details"});
-          return;
-        }
-        
-        data.image =data.image.toString()
-        //data.image =data.image.toString('base64')
-      
-        display.end_result(res,200,data);  
-        return;
-      }
-      
-      else{
-        display.end_result(res,404,{"message":'user is not found'});  
-        return;
-      }
+      data.image =data.image.toString()
+      //data.image =data.image.toString('base64')
+    
+      display.end_result(res,200,data);  
+      return;
     }
     
-    else{      
-      display.end_result(res,200,{"message": "you do not have access for this page"});  
+    else{
+      display.end_result(res,404,{"message":'user is not found'});  
       return;
     }
   }
@@ -176,19 +156,23 @@ exports.update = async(req,res) =>{
     let id = parseInt(req.params.id);
     const user_data = req.body;
 
-    if(req_data.role == 0){
+    // if(!id){
+    //   display.end_result(res,404,{"message":'parameter is empty'});  
+    //   return;
+    // }
+
+    // if(req_data.role == 0){
       
-      if(Object.keys(user_data).includes("is_active")){
-        display.end_result(res,403,{"message": "sorry you don't have the access to update these details"});
-        return;
-      }
+    //   if(Object.keys(user_data).includes("is_active")){
+    //     display.end_result(res,403,{"message": "sorry you don't have the access to update these details"});
+    //     return;
+    //   }
       
-      if(req_data.user_id != id){
-        display.end_result(res,403,{"message": "sorry you don't have the access to update other's details"});
-        return;
-      }
-      
-    }
+    //   if(req_data.user_id != id){
+    //     display.end_result(res,403,{"message": "sorry you don't have the access to update other's details"});
+    //     return;
+    //   }
+    // }
   
     const data = await user.findByPk(id,{
       attributes: { exclude: ['password','role'] },
@@ -239,69 +223,43 @@ exports.update = async(req,res) =>{
   }
 };
 
-// exports.update = async(req,res) =>{
-//   try{
-//     let id = parseInt(req.params.id);
-    
-//     const user_data = req.body;
-
-//     const data = await user.findByPk(id);
-    
-//     if(data){
-
-//       //user_data.updatedAt = new Date().toJSON().slice(0, 10);
-//       await data.update(user_data);
-
-//       if(!req.body.address){
-//         const result = await user.findByPk(id,{ include : user_address });
-//         display.end_result(res,200,{"message": "Updated sucessfully","updated_user":result});
-//         return;
-//       }
-
-//       const user_address_data = req.body.address;
-//       user_address_data.updatedAt = new Date().toJSON().slice(0, 10);
-
-//       const address = await user_address.findOne({ where: { user_id: id } });
-
-//       if(address){
-//         await address.update(user_address_data);
-//       }
-//       else{
-//         display.end_result(res,400,{"message": "user address not found"});
-//         return;
-//       }
-//       const result = await user.findByPk(id,{ include : user_address });
-//       display.end_result(res,200,{"message": "Updated sucessfully","updated_user":result});
-//     }
-//     else{
-//       display.end_result(res,400,{"message": "user not found"});
-//     }
-//   }
-//   catch(err){
-//     display.end_result(res,err.status  || 500,{"message": err.message || "Some error occurred while updating the user."})
-//   }
-// };
 
 exports.deleteByID = async(req,res) =>{
   try{
+    const req_data = req.data;
     let id = parseInt(req.params.id);
-    
-    if(!id){
-      display.end_result(res,404,{"message":'parameter is empty'});  
-      return;
-    }
 
-    data = await user.findByPk(id)
-    if(data){
-      const address = await user_address.findOne({ where: { user_id: id } });
-      if(address){
-        await address.destroy();
-      }    
-      await data.destroy();
-      display.end_result(res,200,{"message": "deleted successfully"});
-      return;
+    // if(!id){
+    //   display.end_result(res,404,{"message":'parameter is empty'});  
+    //   return;
+    // }
+    
+    // if(req_data.role == 0 && req_data.user_id != id){
+    //   display.end_result(res,403,{"message": "sorry you don't have the access to delete other's details"});
+    //   return;
+    // }
+
+    result = await user.findByPk(id)
+
+    if(result){
+      if(req_data.role == 1 && req_data.user_id != result.user_id){
+        display.end_result(res,403,{"message": "sorry you don't have the access to delete other's details"});
+        return;
+      }
+      const data = await user.destroy({
+        where: { 
+          user_id: id
+        }
+      });
+
+      if(data > 0){
+        display.end_result(res,200,{"message": "deleted successfully"});
+        return;
+      }
+
     }
     else{
+
       display.end_result(res,404,{"message": "user not found"});
       return
     }
