@@ -1,3 +1,5 @@
+var user_detail = require('../validation/user_detail_schema.js')
+
 var validation = require('../validation/validation_for_update.js')
 var display = require("../controllers/result_display.js");
 
@@ -57,4 +59,15 @@ module.exports.delete_user = (req, res, next)=>{
         return;
     }
     next();
+}
+
+
+module.exports.update_user_status = (req, res, next)=>{
+  const { error, value } =  user_detail.user_status_update_data_schema.validate(req.body.data, { abortEarly: false });
+  
+  if(error){
+      display.end_result(res,500,{"message": error.details.map(detail => detail.message)});
+      return;
+  }
+  next();
 }
