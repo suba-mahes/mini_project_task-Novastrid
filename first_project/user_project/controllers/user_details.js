@@ -277,11 +277,11 @@ exports.update_status = async(req,res) =>{
       await data.update(user_data);
       await data.save();
 
-      const token = jwt.sign({ email_id:data.email_id, role:data.role, is_active:data.is_active, user_id:data.user_id }, secret_key, { expiresIn: '1h' });
+      // const token = jwt.sign({ email_id:data.email_id, role:data.role, is_active:data.is_active, user_id:data.user_id }, secret_key, { expiresIn: '1h' });
 
       data.image =data.image.toString();
 
-      res.setHeader('Authorization', `Bearer ${token}`);
+//      res.setHeader('Authorization', `Bearer ${token}`);
       display.end_result(res,200,{"message": "Updated sucessfully","updated_user":data});
     }
     else{

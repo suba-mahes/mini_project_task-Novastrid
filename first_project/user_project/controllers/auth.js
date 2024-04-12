@@ -115,7 +115,7 @@ module.exports.forget_password = async(req,res) =>{
         //         display.end_result(res,200,{"message": `Email sent is ${result[2]}`,"token":token });
         //     }
         // });
-        display.end_result(res,200,{"message": `Email sent is OK`,"token":token });
+        display.end_result(res,200,{"message": `Email sent is OK`,"token_to_reset_password":token });
 
     }
     catch(error){
