@@ -70,6 +70,10 @@ exports.user_details_data_schema = Joi.object({
       "any.required" : "mother occupation is required",
       "string.empty" : "mother occupation cannot be empty",
     }),
+    no_of_sibilings: Joi.number().required().messages({
+      "any.required" : "no of sibilings is required",
+      "number.empty" : "no of sibilings cannot be empty",
+    }),
   }).required().messages({
     "any.required" : "family_details  is required",
     "string.empty" : "family_details cannot be empty",

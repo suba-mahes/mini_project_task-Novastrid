@@ -16,7 +16,6 @@ exports.register = async(req, res) => {
   try{
     //const user_data = JSON.parse(req.body.data);
     const user_data = req.body;
-    console.error(user_data);
     const hashed_password = await bcrypt.hash(user_data.password,10);
     user_data.password = hashed_password;
     user_data.role = 0;

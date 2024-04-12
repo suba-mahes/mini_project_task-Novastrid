@@ -23,6 +23,10 @@ module.exports = (sequelize,Sequelize) =>{
           allowNull: false,
           type:Sequelize.STRING
         },
+        no_of_sibilings:{
+          allowNull: false,
+          type:Sequelize.INTEGER
+        },
         user_id:{
           allowNull: false,
           type: Sequelize.INTEGER,

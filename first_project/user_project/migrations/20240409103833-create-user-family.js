@@ -27,6 +27,10 @@ module.exports = {
       allowNull: false,
       type:Sequelize.STRING
     },
+    no_of_sibilings:{
+      allowNull: false,
+      type:Sequelize.INTEGER
+    },
     user_id:{
       type: Sequelize.INTEGER,
         allowNull: false,

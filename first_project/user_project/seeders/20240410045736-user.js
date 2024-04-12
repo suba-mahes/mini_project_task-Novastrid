@@ -60,6 +60,7 @@ module.exports = {
         mother_name: "b",
         gardian_occupation: "off",
         mother_occupation: "hw",
+        no_of_sibilings:2,
         user_id: userIds[0]
       },
       {
@@ -67,6 +68,7 @@ module.exports = {
         mother_name: "kane",
         gardian_occupation: "off",
         mother_occupation: "hw",
+        no_of_sibilings:1,
         user_id: userIds[1]
       }
     ]);
