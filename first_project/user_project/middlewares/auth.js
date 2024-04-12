@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 
-var secret_key = require("../config/config_auth.js");
+var {secret_key, mail_details} = require("../config/config_auth.js");
+
 var auth = require("../validation/auth_schema.js")
 var register = require('../validation/user_detail_schema.js')
 

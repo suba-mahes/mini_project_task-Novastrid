@@ -33,7 +33,7 @@ module.exports.login = async(req,res) =>{
                 return;
             }
             
-            const token = jwt.sign({ email_id:data.email_id, role:data.role, user_id:data.user_id }, secret_key, { expiresIn: '1h' });
+            const token = jwt.sign({ email_id:data.email_id, role:data.role, is_active:data.is_active, user_id:data.user_id }, secret_key, { expiresIn: '1h' });
             
             display.end_result(res,200,{'message':"logged in successfully" ,'token':token});
         }
@@ -86,20 +86,24 @@ module.exports.forget_password = async(req,res) =>{
     try{
         const email_id = req.body.email_id;
 
+        ///const token = jwt.sign({ email_id:data.email_id, role:data.role, is_active:data.is_active, user_id:data.user_id }, secret_key, { expiresIn: '1h' });
+
         const token = jwt.sign({ email_id:email_id }, secret_key, { expiresIn: '1h' });
 
         const reset_link = `${req.protocol}://${req.get('host')}/reset-password?token=${token}`;
+        //const reset_link =`http://localhost:3000/reset-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InByYWJha2FyYW5pbmJhMEBnbWFpbC5jb20iLCJpYXQiOjE3MTI4OTk1NDAsImV4cCI6MTcxMjkwMzE0MH0.mFbEiHs7KpxVMKUfi7j7QSpGVazjATYX_9s1sksFh8A`
         console.log(reset_link);
 
         const transporter = nodemailer.createTransport(mail_details);
         const email_template = fs.readFileSync(template_path, 'utf8');
         const compiled_template = ejs.compile(email_template);
+        
 
         const mailOptions = {
             from: 'insu041831@gmail.com',
-            to: 'prabakaraninba0@gmail.com',
-            subject: 'Mail to for Forgot Password',
-            html: compiled_template(reset_link)
+            to: email_id,
+            subject: 'Mail to for Reseting Password',
+            html: compiled_template({"reset_link": reset_link})
         };
     
         await transporter.sendMail(mailOptions, (error, info) => {

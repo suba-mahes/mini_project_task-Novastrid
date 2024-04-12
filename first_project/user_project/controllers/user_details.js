@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 const db = require("../models/index.js");
@@ -193,7 +194,6 @@ exports.update = async(req,res) =>{
       // }
       
       await data.save();
-      //const result = await user.findByPk(id,{ include : user_address });
       data.image =data.image.toString()
       display.end_result(res,200,{"message": "Updated sucessfully","updated_user":data});
     }
@@ -245,24 +245,37 @@ exports.deleteByID = async(req,res) =>{
 exports.update_status = async(req,res) =>{
   try{
     
-    const req_data = req.data;
     let id = parseInt(req.params.id);
     const user_data = req.body;
 
-    const data = await user.findByPk(id);
+    const data = await user.findByPk(id,{
+      attributes: { exclude: ['password','role'] },
+      include: [
+          {
+          model: user_address, 
+          as: 'address',
+          required: true
+          },
+          {
+          model: user_family,
+          as: 'family_details', 
+          required: true
+          }
+      ],
+    });
     
     if(data){
       
-      if(data.role == 1 && req_data.role == 1 && req_data.user_id != data.user_id){
-        display.end_result(res,403,{"message": "sorry you don't have the access to update other's details"});
-        return;
-      }
+      // if(data.role == 1 && req_data.role == 1 && req_data.user_id != data.user_id){
+      //   display.end_result(res,403,{"message": "sorry you don't have the access to update other's details"});
+      //   return;
+      // }
       
-
-
-      await data.update(data);
+      await data.update(user_data);
       await data.save();
-      //const result = await user.findByPk(id,{ include : user_address });
+
+      const token = jwt.sign({ email_id:data.email_id, role:data.role, is_active:data.is_active, user_id:data.user_id }, secret_key, { expiresIn: '1h' });
+
       data.image =data.image.toString()
       display.end_result(res,200,{"message": "Updated sucessfully","updated_user":data});
     }
