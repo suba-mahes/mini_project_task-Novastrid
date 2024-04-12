@@ -37,7 +37,7 @@ exports.user_details_data_schema = Joi.object({
     "date.format" : "missing date format",
     "date.max" : 'maximun than the given range',
   }),
-  address: {
+  address: Joi.object({
     address1: Joi.string().required().messages({
       "any.required" : "address is required",
       "string.empty" : "address cannot be empty",
@@ -49,8 +49,11 @@ exports.user_details_data_schema = Joi.object({
     city: Joi.string().optional(),
     state: Joi.string().optional(),
     country: Joi.string().optional()
-  },
-  family_details : {
+  }).required().messages({
+    "any.required" : "address  is required",
+    "string.empty" : "address cannot be empty",
+  }),
+  family_details : Joi.object({
     gardian_name: Joi.string().required().messages({
       "any.required" : "gardiun name  is required",
       "string.empty" : "gardiun name cannot be empty",
@@ -67,7 +70,10 @@ exports.user_details_data_schema = Joi.object({
       "any.required" : "mother occupation is required",
       "string.empty" : "mother occupation cannot be empty",
     }),
-  }
+  }).required().messages({
+    "any.required" : "family_details  is required",
+    "string.empty" : "family_details cannot be empty",
+  })
 });
 
 exports.user_status_update_data_schema = Joi.object({

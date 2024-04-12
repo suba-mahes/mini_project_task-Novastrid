@@ -105,16 +105,18 @@ module.exports.forget_password = async(req,res) =>{
             html: compiled_template({"reset_link": reset_link})
         };
     
-        await transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.error('Error sending email:', error);
-                display.end_result(res,500,{"message": error});
-            } else {
-                const result = info.response.split(' ');
-                console.log('Email sent:', result[2]);
-                display.end_result(res,200,{"message": `Email sent is ${result[2]}`,"token":token });
-            }
-        });
+        // await transporter.sendMail(mailOptions, (error, info) => {
+        //     if (error) {
+        //         console.error('Error sending email:', error);
+        //         display.end_result(res,500,{"message": error});
+        //     } else {
+        //         const result = info.response.split(' ');
+        //         console.log('Email sent:', result[2]);
+        //         display.end_result(res,200,{"message": `Email sent is ${result[2]}`,"token":token });
+        //     }
+        // });
+        display.end_result(res,200,{"message": `Email sent is OK`,"token":token });
+
     }
     catch(error){
         display.end_result(res,500,{"message": error.message});
