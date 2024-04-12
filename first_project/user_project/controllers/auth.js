@@ -91,7 +91,6 @@ module.exports.forget_password = async(req,res) =>{
         const token = jwt.sign({ email_id:email_id }, secret_key, { expiresIn: '1h' });
 
         const reset_link = `${req.protocol}://${req.get('host')}/reset-password?token=${token}`;
-        //const reset_link =`http://localhost:3000/reset-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InByYWJha2FyYW5pbmJhMEBnbWFpbC5jb20iLCJpYXQiOjE3MTI4OTk1NDAsImV4cCI6MTcxMjkwMzE0MH0.mFbEiHs7KpxVMKUfi7j7QSpGVazjATYX_9s1sksFh8A`
         console.log(reset_link);
 
         const transporter = nodemailer.createTransport(mail_details);
@@ -113,7 +112,7 @@ module.exports.forget_password = async(req,res) =>{
             } else {
                 const result = info.response.split(' ');
                 console.log('Email sent:', result[2]);
-                display.end_result(res,200,{"message": `Email sent is ${result[2]}`});
+                display.end_result(res,200,{"message": `Email sent is ${result[2]}`,"token":token });
             }
         });
     }

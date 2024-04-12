@@ -23,6 +23,6 @@ router.put('/update-user/:id', auth_validation.authenticate_token, user_details_
 router.delete('/delete-user-by-id/:id',auth_validation.authenticate_token,user_details_middlewaer.id_params_check, user_details_middlewaer.delete_user , users_detail.deleteByID);
 
 
-router.patch('/update-user-status/:id', auth_validation.authenticate_token, user_details_middlewaer.id_params_check,user_details_middlewaer.role_check, user_details_middlewaer.update_user, users_detail.update_status);
+router.patch('/update-user-status/:id', auth_validation.authenticate_token, user_details_middlewaer.id_params_check,user_details_middlewaer.role_check, user_details_middlewaer.update_user_status, users_detail.update_status);
 
 module.exports = router;
