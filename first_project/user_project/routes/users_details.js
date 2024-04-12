@@ -14,7 +14,7 @@ router.get('/welcome', auth_validation.authenticate_token, user_details_middlewa
 router.post('/forget-password',auth_validation.forget_password, auth.forget_password);
 router.post('/reset-password', auth_validation.reset_password, auth_validation.authenticate_token, auth.reset_password);
 
-router.post('/register', auth_validation.reqister, upload.single('image'), users_detail.register);
+router.post('/register', upload.single('image'), auth_validation.reqister, users_detail.register);
 router.get('/get-allusers',auth_validation.authenticate_token, user_details_middlewaer.role_check, users_detail.findAll);
 router.get('/get-user-by-id/:id',auth_validation.authenticate_token, user_details_middlewaer.id_params_check,user_details_middlewaer.role_check, users_detail.findID);
 

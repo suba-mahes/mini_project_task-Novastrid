@@ -72,7 +72,7 @@ exports.user_details_data_schema = Joi.object({
 
 exports.user_status_update_data_schema = Joi.object({
   is_active: Joi.boolean().required().messages({
-    "any.required" : "email is required",
-    "boolean.empty" : "email cannot be empty",
+    "any.required" : "is_active is required",
+    "boolean.empty" : "is_active cannot be empty",
   })
 });

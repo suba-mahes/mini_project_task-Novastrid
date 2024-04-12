@@ -27,7 +27,6 @@ module.exports.update_user = (req, res, next)=>{
     const req_data = req.data;
     const user_data = req.body;
     const error =  validation.update_validation(req.body);
-    console.log(error)
     
     if(error.length){
         display.end_result(res,400,{"error_message": "Invalid request","message": `the request contains ${error}`});
@@ -36,7 +35,7 @@ module.exports.update_user = (req, res, next)=>{
 
     if(req_data.role == 0){
       
-      if(Object.keys(user_data).includes("is_active")){
+      if(Object.keys(user_data).includes("is_active") || !req_data.is_active){
         display.end_result(res,403,{"message": "sorry you don't have the access to update these details"});
         return;
       }
@@ -63,7 +62,7 @@ module.exports.delete_user = (req, res, next)=>{
 
 
 module.exports.update_user_status = (req, res, next)=>{
-  const { error, value } =  user_detail.user_status_update_data_schema.validate(req.body.data, { abortEarly: false });
+  const { error, value } =  user_detail.user_status_update_data_schema.validate(req.body, { abortEarly: false });
   
   if(error){
       display.end_result(res,500,{"message": error.details.map(detail => detail.message)});
