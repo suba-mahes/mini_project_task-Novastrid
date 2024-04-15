@@ -76,7 +76,7 @@ describe('login as user and whole working process', function() {
             })
     });
 
-    it('should login a admin on post ', function(done) {
+    it('should login a user on post ', function(done) {
 
         const req_data = {
             "email_id" : "prabakaraninba0@gmail.com",
