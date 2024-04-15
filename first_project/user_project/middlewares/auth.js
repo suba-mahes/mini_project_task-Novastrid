@@ -19,7 +19,6 @@ module.exports.login = (req, res, next)=>{
 }
 
 module.exports.reqister = (req, res, next)=>{
-    console.log(req.body);
     const { error, value } =  register.user_details_data_schema.validate(req.body, { abortEarly: false });
     
     if(error){

@@ -52,7 +52,6 @@ module.exports.delete_user = (req, res, next)=>{
 
     let id = parseInt(req.params.id);
     const req_data = req.data;
-    console.log(req_data.user_id);
     if(req_data.role == 0 && req_data.user_id != id){
         display.end_result(res,403,{"message": "sorry you don't have the access to delete other's details"});
         return;
