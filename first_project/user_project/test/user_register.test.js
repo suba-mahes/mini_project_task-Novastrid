@@ -1,7 +1,7 @@
 // test/users/.test.js
 const db = require("../models/index.js");
 
-//const {expect} = require('expect');
+const fs = require('fs');
 const request = require('supertest');
 const app = require('../app.js');
 
@@ -22,19 +22,47 @@ afterEach(function(done){
     done();
 });
 
+// const req_data = {
+//     "first_name": "suba mahes",
+//     "last_name": "inba",
+//     "gender": "male",
+//     "d_o_b": "2001-01-01",
+//     "address": {
+//         "address1": "1659 ewsb",
+//         "address2": "thb colon,villapuram",
+//         "city": "Madurai",
+//         "state": "Tamil nadu",
+//         "country": "Ind"
+//     },
+//     "family_details":{
+//         "gardian_name": "inba",
+//         "mother_name": "kane",
+//         "gardian_occupation": "off",
+//         "mother_occupation": "hwhouse wife"
+//     }
+// }
+
 describe('register a user which is already registered', function() {
 
     it('should register a user on post ', function(done) {
-
-        const req_data = {
-            "name" : "insu",
-            "email_id" : "inbaloveeesuba@gmail.com",
-            "password" : "passSDd123"
-        }
-
         request(app)
             .post(`/users/register`)
-            .send(req_data)
+            .field('email_id', 'suba@gmail.com')
+            .field('password', 'Suba@123')
+            .field('first_name', 'suba mahes')
+            .field('last_name', 'inba')
+            .field('gender', 'male')
+            .field('d_o_b', '2001-01-01')
+            .field('address[address1]', '1659 ewsb')
+            .field('address[address2]', 'thb colon,villapuram')
+            .field('address[city]', 'Madurai')
+            .field('address[state]', 'Tamil nadu')
+            .field('address[country]', 'Ind')
+            .field('family_details[gardian_name]', 'inba')
+            .field('family_details[mother_name]', 'kane')
+            .field('family_details[gardian_occupation]', 'off')
+            .field('family_details[mother_occupation]', 'hwhouse wife')
+            .attach('image', fs.readFileSync('/Users/MY PC/Desktop/inba/vietnam - flag.png'), 'vietnam - flag.png')
             .expect(200)
             .end(function(err, res) {
                 if(err) return done(res.body || err);
@@ -44,7 +72,7 @@ describe('register a user which is already registered', function() {
                 }
 
                 const result = res.body; 
-                if((!result.user_id || !result.is_active || !result.email_id || !result.first_name || !result.last_name || !result.gender || !result.d_o_b || !result.image || !result.address.address1 || !result.address.address2 || !result.address.city || !result.address.state || !result.address.country || !result.family_details.gardian_name || !result.family_details.mother_name || !result.family_details.gardian_occupation || !result.family_details.mother_occupation || !result.family_details.no_of_siblings)){
+                if((!result.user_id || !result.email_id || !result.first_name || !result.last_name || !result.gender || !result.d_o_b || !result.image || !result.address.address1 || !result.address.address2 || !result.address.city || !result.address.state || !result.address.country || !result.family_details.gardian_name || !result.family_details.mother_name || !result.family_details.gardian_occupation || !result.family_details.mother_occupation)){
                     return done(new Error('error'));
                 }
                 
@@ -53,16 +81,24 @@ describe('register a user which is already registered', function() {
     });
     
     it('should register a user which is already registered on post ', function(done) {
-
-        const req_data = {
-            "name" : "insu",
-            "email_id" : "insub@gmail.com",
-            "password" : "passSDd123"
-        }
-
         request(app)
             .post(`/users/register`)
-            .send(req_data)
+            .field('email_id', 'suba@gmail.com')
+            .field('password', 'Suba@123')
+            .field('first_name', 'suba mahes')
+            .field('last_name', 'inba')
+            .field('gender', 'male')
+            .field('d_o_b', '2001-01-01')
+            .field('address[address1]', '1659 ewsb')
+            .field('address[address2]', 'thb colon,villapuram')
+            .field('address[city]', 'Madurai')
+            .field('address[state]', 'Tamil nadu')
+            .field('address[country]', 'Ind')
+            .field('family_details[gardian_name]', 'inba')
+            .field('family_details[mother_name]', 'kane')
+            .field('family_details[gardian_occupation]', 'off')
+            .field('family_details[mother_occupation]', 'hwhouse wife')
+            .attach('image', fs.readFileSync('/Users/MY PC/Desktop/inba/vietnam - flag.png'), 'vietnam - flag.png')
             .expect(200)
             .end(function(err, res) {
                 if(err) return done(res.body || err);

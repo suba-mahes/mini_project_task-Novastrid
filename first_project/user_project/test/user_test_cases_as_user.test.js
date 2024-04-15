@@ -1,7 +1,6 @@
 // test/users/.test.js
 const db = require("../models/index.js");
 
-//const {expect} = require('expect');
 const request = require('supertest');
 const app = require('../app.js');
 
