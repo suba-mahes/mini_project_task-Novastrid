@@ -22,17 +22,151 @@ afterEach(function(done){
     done();
 });
 
+let password = "INSU@0418";
+let user_token;
+let id = 15;
+const fake_id = 122;
 
-describe('login as user and whole working process', function() {
-    let user_token;
-    let id = 11;
-    const fake_id = 122
+describe('users authentication process', function() {
+    let token_to_reset_password;
 
+    it('should login a user on post ', function(done) {
+
+        const req_data = {
+            "email_id" : "prabakaraninba@gmail.com",
+            "password" : "Password@123"
+        }
+
+        request(app)
+            .post(`/users/login`)
+            .send(req_data)
+            .expect(200)
+            .end(function(err, res) {
+                if(err) return done(res.body || err);
+
+                if (!res.body || typeof res.body !== 'object') {
+                    return done(new Error('Response body is not an object'));
+                }
+
+                if (res.body.message !== "logged in successfully") {
+                    return done(new Error('logging is not successfull'));
+                }
+                user_token = res.body.token
+                done();
+            });
+    });
+
+    it('To work with forget password', function(done) {
+
+        const req_data = {
+            "email_id" : "prabakaraninba@gmail.com",
+        }
+
+        request(app)
+            .post(`/users/forget-password`)
+            .send(req_data)
+            .expect(200)
+            .end(function(err, res) {
+                if(err) return done(res.body || err);
+
+                if (!res.body || typeof res.body !== 'object') {
+                    return done(new Error('Response body is not an object'));
+                }
+
+                if (res.body.message !== "Email sent is OK") {
+                    return done(new Error('forget password is not successfull'));
+                }
+                token_to_reset_password = res.body.token_to_reset_password
+                done();
+            });
+    });
+
+    it('To work with reset password', function(done) {
+
+        const req_data = {
+            "password" : "INSU@0418",
+        }
+
+        request(app)
+            .post(`/users/reset-password`)
+            .send(req_data)
+            .set('Authorization', `Bearer ${token_to_reset_password}`)
+            .expect(200)
+            .end(function(err, res) {
+                if(err) return done(res.body || err);
+
+                if (!res.body || typeof res.body !== 'object') {
+                    return done(new Error('Response body is not an object'));
+                }
+
+                if (res.body.message !== "password is reseted in successfully") {
+                    return done(new Error('reset password is not successfull'));
+                }
+                token_to_reset_password = res.body.token_to_reset_password
+                done();
+            });
+    });
 
     it('logining  an user with wrong password ', function(done) {
 
         const req_data = {
-            "email_id" : "prabakaraninba0@gmail.com",
+            "email_id" : "prabakaraninba@gmail.com",
+            "password" : "Password@123"
+        }
+
+        request(app)
+            .post(`/users/login`)
+            .send(req_data)
+            .expect(401)
+            .end(function(err, res) {
+                if(err) return done(res.body || err);
+
+                if (!res.body || typeof res.body !== 'object') {
+                    return done(new Error('Response body is not an object'));
+                }
+
+                if (res.body.message !== "Invalid password") {
+                    return done(new Error('Invalid password'));
+                }
+                user_token = res.body.token
+                done();
+            });
+    });
+
+    it('should login a user on post ', function(done) {
+
+        const req_data = {
+            "email_id" : "prabakaraninba@gmail.com",
+            "password" : password
+        }
+
+        request(app)
+            .post(`/users/login`)
+            .send(req_data)
+            .expect(200)
+            .end(function(err, res) {
+                if(err) return done(res.body || err);
+
+                if (!res.body || typeof res.body !== 'object') {
+                    return done(new Error('Response body is not an object'));
+                }
+
+                if (res.body.message !== "logged in successfully") {
+                    return done(new Error('logging is not successfull'));
+                }
+                user_token = res.body.token
+                done();
+            });
+    });
+
+});
+
+describe('login as user and whole working process', function() {
+
+    it('logining  an user with wrong password ', function(done) {
+
+        const req_data = {
+            "email_id" : "prabakaraninba@gmail.com",
             "password" : "insu@123"
         }
 
@@ -79,8 +213,8 @@ describe('login as user and whole working process', function() {
     it('should login a user on post ', function(done) {
 
         const req_data = {
-            "email_id" : "prabakaraninba0@gmail.com",
-            "password" : "Password@123"
+            "email_id" : "prabakaraninba@gmail.com",
+            "password" : password
         }
 
         request(app)
