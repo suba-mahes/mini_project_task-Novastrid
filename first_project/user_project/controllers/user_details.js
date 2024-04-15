@@ -59,7 +59,7 @@ exports.register = async(req, res) => {
       display.end_result(res,200,new_data);
     }
     else{
-        display.end_result(res,404,{"message":"registeration failed"});
+        display.end_result(res,400,{"message":"registeration failed"});
       }
   }
   catch(err){
@@ -144,7 +144,7 @@ exports.findID = async(req,res) => {
     }
     
     else{
-      display.end_result(res,404,{"message":'user is not found'});  
+      display.end_result(res,400,{"message":'user is not found'});  
       return;
     }
   }
@@ -201,7 +201,7 @@ exports.update = async(req,res) =>{
       display.end_result(res,200,{"message": "Updated sucessfully","updated_user":data});
     }
     else{
-      display.end_result(res,400,{"message": "user not found"});
+      display.end_result(res,400,{"message": "user is not found"});
     }
   }
   catch(err){
@@ -218,7 +218,7 @@ exports.deleteByID = async(req,res) =>{
     result = await user.findByPk(id);
 
     if(result){
-      if(req_data.role == 1 && req_data.user_id != result.user_id){
+      if(result.role == 1 && req_data.user_id != result.user_id){
         display.end_result(res,403,{"message": "sorry you don't have the access to delete other's details"});
         return;
       }
@@ -236,7 +236,7 @@ exports.deleteByID = async(req,res) =>{
     }
     else{
 
-      display.end_result(res,404,{"message": "user not found"});
+      display.end_result(res,400,{"message": "user is not found"});
       return
     }
   }
@@ -285,7 +285,7 @@ exports.update_status = async(req,res) =>{
       display.end_result(res,200,{"message": "Updated sucessfully","updated_user":data});
     }
     else{
-      display.end_result(res,400,{"message": "user not found"});
+      display.end_result(res,400,{"message": "user is not found"});
     }
   }
   catch(err){

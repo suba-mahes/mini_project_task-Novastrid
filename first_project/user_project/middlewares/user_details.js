@@ -6,7 +6,7 @@ var display = require("../controllers/result_display.js");
 module.exports.role_check = (req, res, next)=>{
     const req_data = req.data;
     if(req_data.role != 1){
-        display.end_result(res,200,{"message": "you do not have access for this page"});  
+        display.end_result(res,401,{"message": "you do not have access for this page"});  
         return;  
     }
     next();
@@ -15,7 +15,7 @@ module.exports.role_check = (req, res, next)=>{
 module.exports.id_params_check = (req, res, next)=>{
     let id = parseInt(req.params.id);
     if(!id){
-      display.end_result(res,404,{"message":'parameter is empty'});  
+      display.end_result(res,403,{"message":'parameter is empty'});  
       return;
     }
     next();
