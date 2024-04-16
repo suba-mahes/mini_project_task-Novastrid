@@ -24,7 +24,7 @@ afterEach(function(done){
 
 
 describe('login as admin and whole working process', function() {
-    let user_token;
+    let admin_token;
     let id = 7;
 
     it('logining  a admin with wrong password ', function(done) {
@@ -48,7 +48,7 @@ describe('login as admin and whole working process', function() {
                 if (res.body.message !== "Invalid password") {
                     return done(new Error('Invalid password'));
                 }
-                user_token = res.body.token
+                admin_token = res.body.token
                 done();
             });
     });
@@ -95,7 +95,7 @@ describe('login as admin and whole working process', function() {
                 if (res.body.message !== "logged in successfully") {
                     return done(new Error('logging is not successfull'));
                 }
-                user_token = res.body.token
+                admin_token = res.body.token
                 done();
             });
     });
@@ -103,7 +103,7 @@ describe('login as admin and whole working process', function() {
     it("welcome page - login", function(done){
         request(app)
             .get('/users/welcome')
-            .set('Authorization', `Bearer ${user_token}`)
+            .set('Authorization', `Bearer ${admin_token}`)
             .expect(200)
             .end(function(err, res) {
                 if(err) return done(res.body || err);
@@ -166,7 +166,7 @@ describe('login as admin and whole working process', function() {
     it('should return an array of users on GET ', function(done) {
         request(app)
             .get('/users/get-allusers')
-            .set('Authorization', `Bearer ${user_token}`)
+            .set('Authorization', `Bearer ${admin_token}`)
             .expect(200)
             .end(function(err, res) {
                 if(err) return done(res.body || err);
@@ -187,7 +187,7 @@ describe('login as admin and whole working process', function() {
     it('should return a user on GET ', function(done) {
         request(app)
             .get(`/users/get-user-by-id/${id}`)
-            .set('Authorization', `Bearer ${user_token}`)
+            .set('Authorization', `Bearer ${admin_token}`)
             .expect(200)
             .end(function(err, res) {
                 if(err) return done(res.body || err);
@@ -232,9 +232,9 @@ describe('login as admin and whole working process', function() {
         }
         request(app)
             .put(`/users/update-user/${id}`)
-            .set('Authorization', `Bearer ${user_token}`)
+            .set('Authorization', `Bearer ${admin_token}`)
             .send(req_data)
-            .expect(200)
+            .expect(403)
             .end(function(err, res) {
                 if(err) return done(res.body || err);
 
@@ -242,9 +242,8 @@ describe('login as admin and whole working process', function() {
                     return done(new Error('Response body is not an object'));
                 }
 
-                const result = res.body.updated_user; 
-                if(!result.user_id || !result.email_id || !result.first_name || !result.last_name || !result.gender || !result.d_o_b || !result.image || !result.address.address1 || !result.address.address2 || !result.address.city || !result.address.state || !result.address.country || !result.family_details.gardian_name || !result.family_details.mother_name || !result.family_details.gardian_occupation || !result.family_details.mother_occupation){
-                    return done(new Error('updation is not successfull'));
+                if (res.body.message !== "sorry you don't have the access to update user's details") {
+                    return done(new Error('error'));
                 }
 
                 done();
@@ -258,7 +257,7 @@ describe('login as admin and whole working process', function() {
         }
         request(app)
             .patch(`/users/update-user-status/${id}`)
-            .set('Authorization', `Bearer ${user_token}`)
+            .set('Authorization', `Bearer ${admin_token}`)
             .send(req_data)
             .expect(200)
             .end(function(err, res) {
@@ -281,7 +280,7 @@ describe('login as admin and whole working process', function() {
     it('should delete the user by id DELETE', function(done) {
         request(app)
             .delete(`/users/delete-user-by-id/${id}`)
-            .set('Authorization', `Bearer ${user_token}`)
+            .set('Authorization', `Bearer ${admin_token}`)
             .expect(200)
             .end(function(err, res) {
                 if(err) return done(res.body || err);
@@ -302,7 +301,7 @@ describe('login as admin and whole working process', function() {
     it('should delete the user by id (404-error user is not found) DELETE', function(done) {
         request(app)
             .delete(`/users/delete-user-by-id/${id}`)
-            .set('Authorization', `Bearer ${user_token}`)
+            .set('Authorization', `Bearer ${admin_token}`)
             .expect(400)
             .end(function(err, res) {
                 if(err) return done(res.body || err);
@@ -323,7 +322,7 @@ describe('login as admin and whole working process', function() {
     it('should return a user (404-error user is not found) on GET ', function(done) {
         request(app)
             .get(`/users/get-user-by-id/${id}`)
-            .set('Authorization', `Bearer ${user_token}`)
+            .set('Authorization', `Bearer ${admin_token}`)
             .expect(400)
             .end(function(err, res) {
                 if(err) return done(res.body || err);
@@ -340,47 +339,6 @@ describe('login as admin and whole working process', function() {
             });
     });
     
-    //updating - 404
-    it('should update a user (404-error user is not found) on PUT ', function(done) {
-        const req_data = {
-            "first_name": "suba mahes",
-            "last_name": "inba",
-            "gender": "male",
-            "d_o_b": "2001-01-01",
-            "address": {
-                "address1": "1659 ewsb",
-                "address2": "thb colon,villapuram",
-                "city": "Madurai",
-                "state": "Tamil nadu",
-                "country": "Ind"
-            },
-            "family_details":{
-                "gardian_name": "inba",
-                "mother_name": "kane",
-                "gardian_occupation": "off",
-                "mother_occupation": "hwhouse wife"
-            }
-        }
-        request(app)
-            .put(`/users/update-user/${id}`)
-            .set('Authorization', `Bearer ${user_token}`)
-            .send(req_data)
-            .expect(400)
-            .end(function(err, res) {
-                if(err) return done(res.body || err);
-
-                if (!res.body || typeof res.body !== 'object') {
-                    return done(new Error('Response body is not an object'));
-                }
-
-                if (res.body.message !== "user is not found") {
-                    return done(new Error('error'));
-                }
-
-                done();
-            });
-    });
-
     //updating the user's active status (404-error user is not found)
     it('should update the active status of an user (404-error user is not found) on PATCH method ', function(done) {
         const req_data = {
@@ -388,7 +346,7 @@ describe('login as admin and whole working process', function() {
         }
         request(app)
             .patch(`/users/update-user-status/${id}`)
-            .set('Authorization', `Bearer ${user_token}`)
+            .set('Authorization', `Bearer ${admin_token}`)
             .send(req_data)
             .expect(400)
             .end(function(err, res) {

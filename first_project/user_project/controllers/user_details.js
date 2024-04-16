@@ -155,7 +155,6 @@ exports.findID = async(req,res) => {
 exports.update = async(req,res) =>{
   try{
     
-    const req_data = req.data;
     let id = parseInt(req.params.id);
     const user_data = req.body;
 
@@ -175,18 +174,11 @@ exports.update = async(req,res) =>{
       ],
     });
     
-    if(data){
-      
-      if(data.role == 1 && req_data.role == 1 && req_data.user_id != data.user_id){
-        display.end_result(res,403,{"message": "sorry you don't have the access to update other's details"});
-        return;
-      }
-      
-
+    if(data){    
 //      const { address, family_details, ...only_user_data } = user_data;
 
       //await data.update(only_user_data);
-      await data.update(data);
+      await data.update(user_data);
       // if(Object.keys(user_data.address).length){
       //   await data.address.update(address);
       // }
@@ -211,16 +203,12 @@ exports.update = async(req,res) =>{
 
 exports.deleteByID = async(req,res) =>{
   try{
-    const req_data = req.data;
     let id = parseInt(req.params.id);
 
     result = await user.findByPk(id);
 
     if(result){
-      if(result.role == 1 && req_data.user_id != result.user_id){
-        display.end_result(res,403,{"message": "sorry you don't have the access to delete other's details"});
-        return;
-      }
+      
       const data = await user.destroy({
         where: { 
           user_id: id

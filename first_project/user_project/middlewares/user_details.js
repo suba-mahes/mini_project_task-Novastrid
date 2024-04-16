@@ -45,6 +45,10 @@ module.exports.update_user = (req, res, next)=>{
         return;
       }
     }
+    else{
+      display.end_result(res,403,{"message": "sorry you don't have the access to update user's details"});
+      return;
+    }
     next();
 }
 

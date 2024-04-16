@@ -146,7 +146,7 @@ describe('unit tests with active status of user', function() {
     });
     
     //updating the user's active status
-    it('should update the active status of an user (401 error - you do not have access for this page) on PATCH method ', function(done) {
+    it('should update the active status of an user by the user (401 error - you do not have access for this page) on PATCH method ', function(done) {
         const req_data = {
             "is_active": false
         }
@@ -197,7 +197,7 @@ describe('unit tests with active status of user', function() {
             });
     });
 
-    it('should login a admin on post ', function(done) {
+    it('should login a user on post ', function(done) {
 
         const req_data = {
             "email_id" : "prabakaraninba0@gmail.com",
@@ -261,28 +261,6 @@ describe('unit tests with active status of user', function() {
                     return done(new Error('error'));
                 }
                 
-                done();
-            });
-    });
-
-    //deleting (403 - error sorry you don't have the access to delete other's details)
-    it('should delete the user (403 - error) by id DELETE', function(done) {
-        request(app)
-            .delete(`/users/delete-user-by-id/${id}`)
-            .set('Authorization', `Bearer ${user_token}`)
-            .expect(403)
-            .end(function(err, res) {
-                if(err) return done(res.body || err);
-
-                if (!res.body || typeof res.body !== 'object') {
-                    return done(new Error('Response body is not an object'));
-                }
-
-                const result = res.body; 
-                if(result.message !== "sorry you don't have the access to delete these details"){
-                    return done(new Error('error'));
-                }
-
                 done();
             });
     });

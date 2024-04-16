@@ -458,28 +458,7 @@ describe('login as user and whole working process', function() {
         request(app)
             .delete(`/users/delete-user-by-id/${id}`)
             .set('Authorization', `Bearer ${user_token}`)
-            .expect(200)
-            .end(function(err, res) {
-                if(err) return done(res.body || err);
-
-                if (!res.body || typeof res.body !== 'object') {
-                    return done(new Error('Response body is not an object'));
-                }
-
-                if (res.body.message !== "deleted successfully") {
-                    return done(new Error('deletion is not successfull'));
-                }
-
-                done();
-            });
-    });
-
-    //deleting (403 - error sorry you don't have the access to delete other's details)
-    it('should delete the user (403 - error) by id DELETE', function(done) {
-        request(app)
-            .delete(`/users/delete-user-by-id/${fake_id}`)
-            .set('Authorization', `Bearer ${user_token}`)
-            .expect(403)
+            .expect(401)
             .end(function(err, res) {
                 if(err) return done(res.body || err);
 
@@ -488,29 +467,8 @@ describe('login as user and whole working process', function() {
                 }
 
                 const result = res.body; 
-                if(result.message !== "sorry you don't have the access to delete other's details"){
+                if(result.message !== "you do not have access for this page"){
                     return done(new Error('error'));
-                }
-
-                done();
-            });
-    });
-    
-    //deleting (404-error)
-    it('should delete the user by id (404-error) DELETE', function(done) {
-        request(app)
-            .delete(`/users/delete-user-by-id/${id}`)
-            .set('Authorization', `Bearer ${user_token}`)
-            .expect(400)
-            .end(function(err, res) {
-                if(err) return done(res.body || err);
-
-                if (!res.body || typeof res.body !== 'object') {
-                    return done(new Error('Response body is not an object'));
-                }
-
-                if (res.body.message !== "user is not found") {
-                    return done(new Error('deletion is not successfull'));
                 }
 
                 done();
@@ -519,43 +477,43 @@ describe('login as user and whole working process', function() {
 
     
     //updating - 400 user is not found
-    it('should update a user (400-error user is not found) on PUT ', function(done) {
-        const req_data = {
-            "first_name": "suba mahes",
-            "last_name": "inba",
-            "gender": "male",
-            "d_o_b": "2001-01-01",
-            "address": {
-                "address1": "1659 ewsb",
-                "address2": "thb colon,villapuram",
-                "city": "Madurai",
-                "state": "Tamil nadu",
-                "country": "Ind"
-            },
-            "family_details":{
-                "gardian_name": "inba",
-                "mother_name": "kane",
-                "gardian_occupation": "off",
-                "mother_occupation": "hwhouse wife"
-            }
-        }
-        request(app)
-            .put(`/users/update-user/${id}`)
-            .set('Authorization', `Bearer ${user_token}`)
-            .send(req_data)
-            .expect(400)
-            .end(function(err, res) {
-                if(err) return done(res.body || err);
+    // it('should update a user (400-error user is not found) on PUT ', function(done) {
+    //     const req_data = {
+    //         "first_name": "suba mahes",
+    //         "last_name": "inba",
+    //         "gender": "male",
+    //         "d_o_b": "2001-01-01",
+    //         "address": {
+    //             "address1": "1659 ewsb",
+    //             "address2": "thb colon,villapuram",
+    //             "city": "Madurai",
+    //             "state": "Tamil nadu",
+    //             "country": "Ind"
+    //         },
+    //         "family_details":{
+    //             "gardian_name": "inba",
+    //             "mother_name": "kane",
+    //             "gardian_occupation": "off",
+    //             "mother_occupation": "hwhouse wife"
+    //         }
+    //     }
+    //     request(app)
+    //         .put(`/users/update-user/${id}`)
+    //         .set('Authorization', `Bearer ${user_token}`)
+    //         .send(req_data)
+    //         .expect(400)
+    //         .end(function(err, res) {
+    //             if(err) return done(res.body || err);
 
-                if (!res.body || typeof res.body !== 'object') {
-                    return done(new Error('Response body is not an object'));
-                }
+    //             if (!res.body || typeof res.body !== 'object') {
+    //                 return done(new Error('Response body is not an object'));
+    //             }
 
-                if (res.body.message !== "user is not found") {
-                    return done(new Error('error'));
-                }
+    //             if (res.body.message !== "user is not found") {
+    //                 return done(new Error('error'));
+    //             }
 
-                done();
-            });
-    });
+    //             done();
+    //         });
+    // });
 });
