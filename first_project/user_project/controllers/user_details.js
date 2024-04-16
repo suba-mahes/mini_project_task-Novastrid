@@ -174,18 +174,19 @@ exports.update = async(req,res) =>{
     });
     
     if(data){    
-//      const { address, family_details, ...only_user_data } = user_data;
+//      await data.update(user_data);
 
-      //await data.update(only_user_data);
-      await data.update(user_data);
-      // if(Object.keys(user_data.address).length){
-      //   await data.address.update(address);
-      // }
+      const { address, family_details, ...only_user_data } = user_data;
 
-      // if(Object.keys(user_data.family_details).length){
-      //   await data.family_details.update(family_details);
-      // }
-      
+      await data.update(only_user_data);
+      if(Object.keys(user_data.address).length){
+        await data.address.update(address);
+      }
+
+      if(Object.keys(user_data.family_details).length){
+        await data.family_details.update(family_details);
+      }
+
       await data.save();
       data.image =data.image.toString()
       display.end_result(res,200,{"message": "Updated sucessfully","updated_user":data});
