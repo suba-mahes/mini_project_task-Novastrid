@@ -11,14 +11,14 @@ module.exports = {
     const users = await user_model.bulkCreate([
       {
         is_active:1,
-        role: 0,
-        email_id:"aaa@gmail.com",
-        password: await bcrypt.hash("Password@123",10),
-        first_name: "aaa",
-        last_name: "bbb",
+        role: 1,
+        email_id:"admin@gmail.com",
+        password: await bcrypt.hash("Admin@123",10),
+        first_name: "admin",
+        last_name: "admin",
         gender: "female",
-        image: "../user_project/file_images/Marina_aaa.jpg",
-        d_o_b: new Date('2001-01-01')
+        image: "../user_project/file_images/admin_admin.jpg",
+        d_o_b: new Date('1990-01-01')
       },
     ], { returning: true });
 
@@ -26,24 +26,24 @@ module.exports = {
 
     await queryInterface.bulkInsert('user_addresses', [
       {
-        address1: "9A muthu street",
-        address2: "mathichiyam",
-        city: "madu",
+        address1: "a1 xyz",
+        address2: "aaa",
+        city: "mad",
         state: "TN",
         country: "Ind",
         user_id: userIds[0] 
-      }
+      },
     ]);
 
     await queryInterface.bulkInsert('user_families', [
       {
-        gardian_name: "inba",
-        mother_name: "kane",
+        gardian_name: "a",
+        mother_name: "b",
         gardian_occupation: "off",
         mother_occupation: "hw",
-        no_of_sibilings:1,
+        no_of_sibilings:2,
         user_id: userIds[0]
-      }
+      },
     ]);
   },
 
