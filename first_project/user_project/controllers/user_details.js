@@ -1,4 +1,5 @@
-const jwt = require('jsonwebtoken');
+const fs = require('fs');
+
 const bcrypt = require('bcrypt');
 
 const db = require("../models/index.js");
@@ -208,6 +209,15 @@ exports.deleteByID = async(req,res) =>{
     result = await user.findByPk(id);
 
     if(result){
+
+      if (fs.existsSync(result.image)) {
+        fs.unlink(result.image, (err) => {
+          if (err) {
+            display.end_result(res,err.status  || 500,{"message": err.message || "Some error occurred while deleting the user."});
+            return;
+          } 
+        });
+      }
       
       const data = await user.destroy({
         where: { 
