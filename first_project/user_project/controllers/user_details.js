@@ -1,8 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-var {secret_key, mail_details} = require("../config/config_auth.js");
-
 const db = require("../models/index.js");
 const user = db.user;
 const user_address = db.user_address;
@@ -15,6 +13,7 @@ var display = require("../controllers/result_display.js");
 exports.register = async(req, res) => {
   try{
     //const user_data = JSON.parse(req.body.data);
+    console.log("hai")
     const user_data = req.body;
     const hashed_password = await bcrypt.hash(user_data.password,10);
     user_data.password = hashed_password;
@@ -276,8 +275,6 @@ exports.update_status = async(req,res) =>{
       
       await data.update(user_data);
       await data.save();
-
-      // const token = jwt.sign({ email_id:data.email_id, role:data.role, is_active:data.is_active, user_id:data.user_id }, secret_key, { expiresIn: '1h' });
 
       data.image =data.image.toString();
 

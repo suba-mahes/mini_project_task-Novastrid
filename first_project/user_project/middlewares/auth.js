@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-var {secret_key, mail_details} = require("../config/config_auth.js");
+const config = require("../config/config.json")
 
 var auth = require("../validation/auth_schema.js")
 var register = require('../validation/user_detail_schema.js')
@@ -57,7 +57,7 @@ module.exports.authenticate_token = (req, res, next)=>{
         return;
     }
     
-    jwt.verify(token, secret_key, (err, decoded) => {
+    jwt.verify(token, config.secret_key, (err, decoded) => {
         if (err) {
             display.end_result(res,403,{"message": "Token is not valid"});
             return;

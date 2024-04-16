@@ -11,9 +11,8 @@ const user_address = db.user_address;
 const user_family = db.user_family;
 
 var display = require("../controllers/result_display.js");
-var {secret_key, mail_details} = require("../config/config_auth.js");
+const config = require("../config/config.json")
 
-const template_path = "/node_js/mini_project_task-Novastrid/first_project/user_project/templete/email_template_html.ejs"
 
 module.exports.login = async(req,res) =>{
     try{
@@ -33,7 +32,7 @@ module.exports.login = async(req,res) =>{
                 return;
             }
             
-            const token = jwt.sign({ email_id:data.email_id, role:data.role, is_active:data.is_active, user_id:data.user_id }, secret_key, { expiresIn: '1h' });
+            const token = jwt.sign({ email_id:data.email_id, role:data.role, is_active:data.is_active, user_id:data.user_id }, config.secret_key, { expiresIn: '1h' });
             
             display.end_result(res,200,{'message':"logged in successfully" ,'token':token});
         }
@@ -86,15 +85,15 @@ module.exports.forget_password = async(req,res) =>{
     try{
         const email_id = req.body.email_id;
 
-        ///const token = jwt.sign({ email_id:data.email_id, role:data.role, is_active:data.is_active, user_id:data.user_id }, secret_key, { expiresIn: '1h' });
+        ///const token = jwt.sign({ email_id:data.email_id, role:data.role, is_active:data.is_active, user_id:data.user_id }, config.secret_key, { expiresIn: '1h' });
 
-        const token = jwt.sign({ email_id:email_id }, secret_key, { expiresIn: '1h' });
+        const token = jwt.sign({ email_id:email_id }, config.secret_key, { expiresIn: '1h' });
 
         const reset_link = `${req.protocol}://${req.get('host')}/reset-password?token=${token}`;
         console.log(reset_link);
 
-        const transporter = nodemailer.createTransport(mail_details);
-        const email_template = fs.readFileSync(template_path, 'utf8');
+        const transporter = nodemailer.createTransport(config.mail_details);
+        const email_template = fs.readFileSync(config.email_template_path, 'utf8');
         const compiled_template = ejs.compile(email_template);
         
 
@@ -141,7 +140,7 @@ module.exports.reset_password = async(req,res) =>{
             await data.update({password: password});
             await data.save();
 
-//            const token = jwt.sign({ email_id:data.email_id, role:data.role, user_id:data.user_id }, secret_key, { expiresIn: '1h' });
+//            const token = jwt.sign({ email_id:data.email_id, role:data.role, user_id:data.user_id }, config.secret_key, { expiresIn: '1h' });
 
             const login_url = `${req.protocol}://${req.get('host')}/login`;
             

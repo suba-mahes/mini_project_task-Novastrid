@@ -26,6 +26,6 @@ sequelize db:seed:undo
 
 npm install exceljs xlsx
 
-npm install --save-dev mocha chai supertest
+npm install --save-dev mocha chai supertest form-data
 
 npm install node-cron axios nodemailer ejs

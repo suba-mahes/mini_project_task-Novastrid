@@ -11,6 +11,18 @@
             "acquire": 30000,
             "idle": 10000
         }
-    }  
+    },
+    "secret_key" : "e83a9f2b#6c$P1A!s0qzR*",
+    "mail_details" : {
+        "host": "smtp.gmail.com",
+        "port": 587,
+        "secure": false,
+        "auth": {
+            "user": "insu041831@gmail.com",
+            "pass": "ialw aubx wzlp nmuy"
+        }
+    },
+    "image_upload_directory" : "/node_js/mini_project_task-Novastrid/first_project/user_project/file_images",
+    "email_template_path" : "/node_js/mini_project_task-Novastrid/first_project/user_project/templete/email_template_html.ejs" 
 }
 

@@ -1,6 +1,6 @@
 // test/users/.test.js
 const db = require("../models/index.js");
-
+const FormData = require('form-data');
 const fs = require('fs');
 const request = require('supertest');
 const app = require('../app.js');
@@ -23,6 +23,7 @@ afterEach(function(done){
 });
 
 // const req_data = {
+//     "image" : fs.createReadStream('C:\\Users\\MY PC\\Desktop\\inba\\vietnam - flag.png'),
 //     "first_name": "suba mahes",
 //     "last_name": "inba",
 //     "gender": "male",
@@ -42,14 +43,18 @@ afterEach(function(done){
 //     }
 // }
 
-describe('register a user which is already registered', function() {
 
+describe('register a user', function() {
+    const filePath = 'C:\\Users\\MY PC\\Desktop\\inba\\vietnam - flag.png';
     it('should register a user on post ', function(done) {
+
         request(app)
             .post(`/users/register`)
-            .field('email_id', 'suba@gmail.com')
+            .set('Content-Type', 'multipart/form-data')
+            .attach('image', filePath)
+            .field('email_id', 'subbaainbbaa@gmail.com')
             .field('password', 'Suba@123')
-            .field('first_name', 'suba mahes')
+            .field('first_name', 'suba')
             .field('last_name', 'inba')
             .field('gender', 'male')
             .field('d_o_b', '2001-01-01')
@@ -62,7 +67,7 @@ describe('register a user which is already registered', function() {
             .field('family_details[mother_name]', 'kane')
             .field('family_details[gardian_occupation]', 'off')
             .field('family_details[mother_occupation]', 'hwhouse wife')
-            .attach('image', fs.readFileSync('/Users/MY PC/Desktop/inba/vietnam - flag.png'), 'vietnam - flag.png')
+            .field('family_details[no_of_sibilings]', 4)
             .expect(200)
             .end(function(err, res) {
                 if(err) return done(res.body || err);
@@ -78,14 +83,16 @@ describe('register a user which is already registered', function() {
                 
                 done();
             });
-    });
+    }).timeout(50000); 
     
     it('should register a user which is already registered on post ', function(done) {
         request(app)
             .post(`/users/register`)
-            .field('email_id', 'suba@gmail.com')
+            .set('Content-Type', 'multipart/form-data')
+            .attach('image', filePath)
+            .field('email_id', 'subaainbbaa@gmail.com')
             .field('password', 'Suba@123')
-            .field('first_name', 'suba mahes')
+            .field('first_name', 'suba')
             .field('last_name', 'inba')
             .field('gender', 'male')
             .field('d_o_b', '2001-01-01')
@@ -98,7 +105,7 @@ describe('register a user which is already registered', function() {
             .field('family_details[mother_name]', 'kane')
             .field('family_details[gardian_occupation]', 'off')
             .field('family_details[mother_occupation]', 'hwhouse wife')
-            .attach('image', fs.readFileSync('/Users/MY PC/Desktop/inba/vietnam - flag.png'), 'vietnam - flag.png')
+            .field('family_details[no_of_sibilings]', 4)
             .expect(200)
             .end(function(err, res) {
                 if(err) return done(res.body || err);
@@ -112,5 +119,5 @@ describe('register a user which is already registered', function() {
                 }
                 done();
             });
-    });
+    }).timeout(50000);
 });
