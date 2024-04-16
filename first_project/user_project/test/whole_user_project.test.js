@@ -131,7 +131,7 @@ describe('users authentication process', function() {
                 user_token = res.body.token
                 done();
             });
-    });
+    }).timeout(50000);
 
     it('To work with forget password', function(done) {
 
@@ -156,7 +156,7 @@ describe('users authentication process', function() {
                 token_to_reset_password = res.body.token_to_reset_password
                 done();
             });
-    });
+    }).timeout(50000);
 
     it('To work with reset password', function(done) {
 
@@ -182,7 +182,7 @@ describe('users authentication process', function() {
                 token_to_reset_password = res.body.token_to_reset_password
                 done();
             });
-    });
+    }).timeout(50000);
 
     it('logining  an user with wrong password ', function(done) {
 
@@ -530,48 +530,6 @@ describe('Whole working process on USER SIDE', function() {
                 done();
             });
     });
-
-    
-    //updating - 400 user is not found
-    // it('should update a user (400-error user is not found) on PUT ', function(done) {
-    //     const req_data = {
-    //         "first_name": "suba mahes",
-    //         "last_name": "inba",
-    //         "gender": "male",
-    //         "d_o_b": "2001-01-01",
-    //         "address": {
-    //             "address1": "1659 ewsb",
-    //             "address2": "thb colon,villapuram",
-    //             "city": "Madurai",
-    //             "state": "Tamil nadu",
-    //             "country": "Ind"
-    //         },
-    //         "family_details":{
-    //             "gardian_name": "inba",
-    //             "mother_name": "kane",
-    //             "gardian_occupation": "off",
-    //             "mother_occupation": "hwhouse wife"
-    //         }
-    //     }
-    //     request(app)
-    //         .put(`/users/update-user/${id}`)
-    //         .set('Authorization', `Bearer ${user_token}`)
-    //         .send(req_data)
-    //         .expect(400)
-    //         .end(function(err, res) {
-    //             if(err) return done(res.body || err);
-
-    //             if (!res.body || typeof res.body !== 'object') {
-    //                 return done(new Error('Response body is not an object'));
-    //             }
-
-    //             if (res.body.message !== "user is not found") {
-    //                 return done(new Error('error'));
-    //             }
-
-    //             done();
-    //         });
-    // });
 });
 
 
@@ -935,4 +893,47 @@ describe('Whole working process on ADMIN SIDE', function() {
             });
     });
 
+});
+
+describe('Trying to update the user by the USER SIDE after deleting the user', function() {
+    //updating - 400 user is not found
+    it('should update a user (400-error user is not found) on PUT ', function(done) {
+        const req_data = {
+            "first_name": "suba mahes",
+            "last_name": "inba",
+            "gender": "male",
+            "d_o_b": "2001-01-01",
+            "address": {
+                "address1": "1659 ewsb",
+                "address2": "thb colon,villapuram",
+                "city": "Madurai",
+                "state": "Tamil nadu",
+                "country": "Ind"
+            },
+            "family_details":{
+                "gardian_name": "inba",
+                "mother_name": "kane",
+                "gardian_occupation": "off",
+                "mother_occupation": "hwhouse wife"
+            }
+        }
+        request(app)
+            .put(`/users/update-user/${id}`)
+            .set('Authorization', `Bearer ${user_token}`)
+            .send(req_data)
+            .expect(400)
+            .end(function(err, res) {
+                if(err) return done(res.body || err);
+
+                if (!res.body || typeof res.body !== 'object') {
+                    return done(new Error('Response body is not an object'));
+                }
+
+                if (res.body.message !== "user is not found") {
+                    return done(new Error('error'));
+                }
+
+                done();
+            });
+    });
 });
