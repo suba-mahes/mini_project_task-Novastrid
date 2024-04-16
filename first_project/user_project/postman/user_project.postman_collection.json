@@ -35,7 +35,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email_id\" : \"admin@gmail.com\",\r\n    \"password\" : \"Admin@123\"\r\n}\r\n\r\n// {\r\n//     \"email_id\" : \"prabakaraninba0@gmail.com\",\r\n//     \"password\" : \"Insuba@123\"\r\n// }\r\n\r\n// {\r\n//     \"email_id\" : \"aaaass@gmail.com\",\r\n//     \"password\" : \"Password@123\"\r\n// }",
+					"raw": "{\r\n    \"email_id\" : \"admin@gmail.com\",\r\n    \"password\" : \"Admin@123\"\r\n}\r\n\r\n// {\r\n//     \"email_id\" : \"prabakaraninba0@gmail.com\",\r\n//     \"password\" : \"Insuba@123\"\r\n// }\r\n\r\n// {\r\n//     \"email_id\" : \"aaa@gmail.com\",\r\n//     \"password\" : \"Insu@123\"\r\n// }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -56,8 +56,7 @@
 							"try {\r",
 							"    const responseBody = pm.response.json();\r",
 							"\r",
-							"    const token = responseBody.token;\r",
-							"\r",
+							"    const token = responseBody.token_to_reset_password;\r",
 							"    pm.environment.set('token', token);\r",
 							"} \r",
 							"catch (error) {\r",
@@ -75,7 +74,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "// {\r\n//     \"email_id\" : \"admin@gmail.com\",\r\n//     \"password\" : \"Admin@123\"\r\n// }\r\n\r\n{\r\n    \"email_id\" : \"prabakaraninba0@gmail.com\"\r\n}",
+					"raw": "// {\r\n//     \"email_id\" : \"admin@gmail.com\",\r\n//     \"password\" : \"Admin@123\"\r\n// }\r\n\r\n{\r\n    \"email_id\" : \"prabakaraninba0@gmail.com\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -93,16 +92,6 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"try {\r",
-							"    const responseBody = pm.response.json();\r",
-							"\r",
-							"    const token = responseBody.token;\r",
-							"\r",
-							"    pm.environment.set('token', token);\r",
-							"} \r",
-							"catch (error) {\r",
-							"    console.error('Error parsing response body:', error);\r",
-							"}\r",
 							""
 						],
 						"type": "text/javascript",
@@ -121,7 +110,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "// {\r\n//     \"email_id\" : \"admin@gmail.com\",\r\n//     \"password\" : \"Admin@123\"\r\n// }\r\n\r\n{\r\n    \"password\" : \"Insu@123\"\r\n}",
+					"raw": "// {\r\n//     \"password\" : \"Admin@123\"\r\n// }\r\n\r\n{\r\n    \"password\" : \"Password@123\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -194,7 +183,7 @@
 					"formdata": [
 						{
 							"key": "email_id",
-							"value": "prabakaraninba0@gmail.com",
+							"value": "prabbaa@gmail.com",
 							"type": "text"
 						},
 						{
@@ -268,9 +257,14 @@
 							"type": "text"
 						},
 						{
+							"key": "family_details[no_of_sibilings]",
+							"value": "3",
+							"type": "text"
+						},
+						{
 							"key": "image",
 							"type": "file",
-							"src": "/C:/Users/MY PC/Desktop/inba/singapore/Ice cream musuem.jpg"
+							"src": "/C:/Users/MY PC/Desktop/inba/singapore - flag.png"
 						}
 					]
 				},
@@ -298,12 +292,24 @@
 						}
 					}
 				},
-				"url": "{{url}}{{user}}/update-user/3"
+				"url": "{{url}}{{user}}/update-user/2"
 			},
 			"response": []
 		},
 		{
 			"name": "user-details-update status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -315,14 +321,14 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"first_name\": \"suba mahes\",\r\n    \"last_name\": \"inba\",\r\n    \"gender\": \"male\",\r\n    \"d_o_b\": \"2001-01-01\",\r\n    \"address\": {\r\n        \"address1\": \"1659 ewsb\",\r\n        \"address2\": \"thb colon,villapuram\",\r\n        \"city\": \"Madurai\",\r\n        \"state\": \"Tamil nadu\",\r\n        \"country\": \"Ind\"\r\n    },\r\n    \"family_details\":{\r\n        \"gardian_name\": \"inba\",\r\n        \"mother_name\": \"kane\",\r\n        \"gardian_occupation\": \"off\",\r\n        \"mother_occupation\": \"hw\"\r\n    }\r\n}",
+					"raw": "{\r\n    \"is_active\": false\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "{{url}}{{user}}/update-user-status/9"
+				"url": "{{url}}{{user}}/update-user-status/2"
 			},
 			"response": []
 		},
