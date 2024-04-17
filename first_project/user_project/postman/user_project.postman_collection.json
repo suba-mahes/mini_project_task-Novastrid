@@ -35,7 +35,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email_id\" : \"admin@gmail.com\",\r\n    \"password\" : \"Admin@123\"\r\n}\r\n\r\n// {\r\n//     \"email_id\" : \"prabakaraninba0@gmail.com\",\r\n//     \"password\" : \"Insuba@123\"\r\n// }\r\n\r\n// {\r\n//     \"email_id\" : \"aaa@gmail.com\",\r\n//     \"password\" : \"Insu@123\"\r\n// }",
+					"raw": "{\r\n    \"email_id\" : \"admin@gmail.com\",\r\n    \"password\" : \"Admin@123\"\r\n}\r\n\r\n// {\r\n//     \"email_id\" : \"prabakaraninba0@gmail.com\",\r\n//     \"password\" : \"INSU@123\"\r\n// }\r\n\r\n// {\r\n//     \"email_id\" : \"aaa@gmail.com\",\r\n//     \"password\" : \"Password@123\"\r\n// }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -137,6 +137,21 @@
 			"response": []
 		},
 		{
+			"name": "profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{token}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "{{url}}{{user}}/profile"
+			},
+			"response": []
+		},
+		{
 			"name": "user",
 			"request": {
 				"auth": {
@@ -153,6 +168,9 @@
 		},
 		{
 			"name": "user-id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -162,7 +180,16 @@
 				},
 				"method": "GET",
 				"header": [],
-				"url": "{{url}}{{user}}/get-user-by-id/4"
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{url}}{{user}}/get-user-by-id/2"
 			},
 			"response": []
 		},
@@ -183,7 +210,7 @@
 					"formdata": [
 						{
 							"key": "email_id",
-							"value": "prabbaa@gmail.com",
+							"value": "prabakaraninba0@gmail.com",
 							"type": "text"
 						},
 						{
@@ -285,7 +312,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"first_name\": \"suba mahes\",\r\n    \"last_name\": \"inba\",\r\n    \"gender\": \"male\",\r\n    \"d_o_b\": \"2001-01-01\",\r\n    \"address\": {\r\n        \"address1\": \"1659 ewsb\",\r\n        \"address2\": \"thb colon,villapuram\",\r\n        \"city\": \"Madurai\",\r\n        \"state\": \"Tamil nadu\",\r\n        \"country\": \"Ind\"\r\n    },\r\n    \"family_details\":{\r\n        \"gardian_name\": \"inba\",\r\n        \"mother_name\": \"kane\",\r\n        \"gardian_occupation\": \"off\",\r\n        \"mother_occupation\": \"hw\"\r\n    }\r\n}",
+					"raw": "{\r\n    \"first_name\": \"suba mahes\",\r\n    \"last_name\": \"inba\",\r\n    \"gender\": \"male\",\r\n    \"d_o_b\": \"2001-01-01\",\r\n    \"address\": {\r\n        \"address1\": \"1659 ewsb\",\r\n        \"address2\": \"th,villapuram\",\r\n        \"city\": \"MDU\",\r\n        \"state\": \"Tamil nadu\",\r\n        \"country\": \"India\"\r\n    },\r\n    \"family_details\":{\r\n        \"gardian_name\": \"inba\",\r\n        \"mother_name\": \"kane\",\r\n        \"gardian_occupation\": \"office\",\r\n        \"mother_occupation\": \"housewife\"\r\n    }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -343,7 +370,7 @@
 				},
 				"method": "DELETE",
 				"header": [],
-				"url": "{{url}}{{user}}/delete-user-by-id/3"
+				"url": "{{url}}{{user}}/delete-user-by-id/4"
 			},
 			"response": []
 		}
