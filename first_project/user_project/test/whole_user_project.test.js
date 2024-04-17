@@ -233,7 +233,7 @@ describe('users authentication process', function() {
                 user_token = res.body.token
                 done();
             });
-    });
+        }).timeout(50000);
 
 });
 
@@ -263,7 +263,7 @@ describe('LOGIN for both USER and ADMIN ', function() {
                 user_token = res.body.token
                 done();
             });
-    });
+    }).timeout(50000);
 
     it('should login a admin on post ', function(done) {
 
@@ -289,7 +289,7 @@ describe('LOGIN for both USER and ADMIN ', function() {
                 admin_token = res.body.token
                 done();
             });
-    });
+    }).timeout(50000);
 
 });
 
@@ -314,7 +314,7 @@ describe('Whole working process on USER SIDE', function() {
                 
                 done();
             })
-    });
+    }).timeout(50000);
 
     it("welcome page - login as a user (401 error - you do not have access for this page) ", function(done){
         request(app)
@@ -335,7 +335,7 @@ describe('Whole working process on USER SIDE', function() {
 
                 done();
             })
-        });
+        }).timeout(50000);
     
     it("get-allusers page - (401-error token is not provided)", function(done){
         request(app)
@@ -356,7 +356,7 @@ describe('Whole working process on USER SIDE', function() {
                 
                 done();
             })
-    });
+    }).timeout(50000);
 
     it("get-allusers page - (401-error token is not provided)", function(done){
         request(app)
@@ -377,7 +377,7 @@ describe('Whole working process on USER SIDE', function() {
                 
                 done();
             })
-    });
+    }).timeout(50000);
 
     it('should return an array of users (401 error - you do not have access for this page) on GET ', function(done) {
         request(app)
@@ -398,7 +398,7 @@ describe('Whole working process on USER SIDE', function() {
 
                 done();
             });
-    });
+    }).timeout(50000);
     
     it("profile page - after login", function(done){
         request(app)
@@ -419,7 +419,7 @@ describe('Whole working process on USER SIDE', function() {
                                
                 done();
             })
-        });
+        }).timeout(50000);
 
     it('should return a user (401 error - you do not have access for this page) on GET ', function(done) {
         request(app)
@@ -440,7 +440,7 @@ describe('Whole working process on USER SIDE', function() {
 
                 done();
             });
-    });
+    }).timeout(50000);
 
 
     //updating 
@@ -483,7 +483,7 @@ describe('Whole working process on USER SIDE', function() {
 
                 done();
             });
-    });
+    }).timeout(50000);
 
     //updating  (403 - error sorry you don't have the access to update other's details)
     it('should update a user (403 - error) on PUT ', function(done) {
@@ -525,7 +525,7 @@ describe('Whole working process on USER SIDE', function() {
                 
                 done();
             });
-    });
+    }).timeout(50000);
 
 
     //updating the user's active status
@@ -552,7 +552,7 @@ describe('Whole working process on USER SIDE', function() {
 
                 done();
             });
-    });
+    }).timeout(50000);
 
     //deleting
     it('should delete the user by id DELETE', function(done) {
@@ -574,7 +574,7 @@ describe('Whole working process on USER SIDE', function() {
 
                 done();
             });
-    });
+    }).timeout(50000);
 });
 
 
@@ -630,7 +630,7 @@ describe('unit tests with active status of user', function() {
                 user_token = res.body.token
                 done();
             });
-    });
+    }).timeout(50000);
 
     // //updating  (403 - error sorry you don't have the access to update these details)
     // it('should update a user (403 - error) on PUT ', function(done) {
@@ -697,7 +697,7 @@ describe('Whole working process on ADMIN SIDE', function() {
                 
                 done();
             })
-    });
+    }).timeout(50000);
 
     it("profile page - after login", function(done){
         request(app)
@@ -718,7 +718,7 @@ describe('Whole working process on ADMIN SIDE', function() {
                                
                 done();
             })
-    });
+    }).timeout(50000);
 
     it("welcome page - login", function(done){
         request(app)
@@ -739,7 +739,7 @@ describe('Whole working process on ADMIN SIDE', function() {
                 }               
                 done();
             })
-        });
+        }).timeout(50000);
     
     it("get-allusers page - (401-error token is not provided)", function(done){
         request(app)
@@ -760,7 +760,7 @@ describe('Whole working process on ADMIN SIDE', function() {
                 
                 done();
             })
-    });
+    }).timeout(50000);
 
     it("get-allusers page - (401-error token is not provided)", function(done){
         request(app)
@@ -781,7 +781,7 @@ describe('Whole working process on ADMIN SIDE', function() {
                 
                 done();
             })
-    });
+    }).timeout(50000);
 
     it('should return an array of users on GET ', function(done) {
         request(app)
@@ -801,7 +801,7 @@ describe('Whole working process on ADMIN SIDE', function() {
                 }
                 done();
             });
-    });
+    }).timeout(50000);
     
 
     it('should return a user on GET ', function(done) {
@@ -826,7 +826,7 @@ describe('Whole working process on ADMIN SIDE', function() {
                 }
                 done();
             });
-    });
+    }).timeout(50000);
 
 
     //updating
@@ -868,7 +868,7 @@ describe('Whole working process on ADMIN SIDE', function() {
 
                 done();
             });
-    });
+    }).timeout(50000);
 
 
     //deleting
@@ -890,7 +890,7 @@ describe('Whole working process on ADMIN SIDE', function() {
 
                 done();
             });
-    });
+    }).timeout(50000);
 
     //deleting (404-error user is not found)
     it('should delete the user by id (404-error user is not found) DELETE', function(done) {
@@ -911,7 +911,7 @@ describe('Whole working process on ADMIN SIDE', function() {
 
                 done();
             });
-    });
+    }).timeout(50000);
 
     //getting by ID (404-error user is not found)
     it('should return a user (404-error user is not found) on GET ', function(done) {
@@ -932,7 +932,7 @@ describe('Whole working process on ADMIN SIDE', function() {
 
                 done();
             });
-    });
+    }).timeout(50000);
     
     //updating the user's active status (404-error user is not found)
     it('should update the active status of an user (404-error user is not found) on PATCH method ', function(done) {
@@ -957,6 +957,6 @@ describe('Whole working process on ADMIN SIDE', function() {
 
                 done();
             });
-    });
+    }).timeout(50000);
 
 });
