@@ -8,7 +8,7 @@ before(function(done) {
         console.log('Sequelize models synced for testing\n');
         done();
     }).catch(done);
-}).timeout(50000);
+});
 
 beforeEach(function(done){
     console.log("\nlet's start the test : ");
