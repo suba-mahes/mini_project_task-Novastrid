@@ -158,8 +158,6 @@ exports.findAll = async(req,res) => {
 
 exports.findID = async(req,res) => {
   try{
-    const req_data = req.data;
-
     let id = parseInt(req.params.id); 
     
     const data = await user.findOne({
@@ -200,7 +198,7 @@ exports.findID = async(req,res) => {
   }
 };
 
-exports.update = async(req,res) =>{
+exports.updateByID = async(req,res) =>{
   try{
     
     let id = parseInt(req.params.id);
@@ -290,9 +288,8 @@ exports.deleteByID = async(req,res) =>{
   }
 };
 
-exports.update_status = async(req,res) =>{
+exports.updateStatus = async(req,res) =>{
   try{
-    
     let id = parseInt(req.params.id);
     const user_data = req.body;
 
@@ -329,6 +326,56 @@ exports.update_status = async(req,res) =>{
     }
     else{
       display.end_result(res,400,{"message": "user is not found"});
+    }
+  }
+  catch(err){
+    display.end_result(res,err.status  || 500,{"message": err.message || "Some error occurred while updating the user."})
+  }
+};
+
+exports.updateProfile = async(req,res) =>{
+  try{
+    //const req_data = req.data;
+
+    let id = parseInt(req.data.user_id);
+    const user_data = req.body;
+
+    const data = await user.findByPk(id,{
+      attributes: { exclude: ['password','role'] },
+      include: [
+          {
+          model: user_address, 
+          as: 'address',
+          required: true
+          },
+          {
+          model: user_family,
+          as: 'family_details', 
+          required: true
+          }
+      ],
+    });
+    
+    if(data){    
+//      await data.update(user_data);
+
+      const { address, family_details, ...only_user_data } = user_data;
+
+      await data.update(only_user_data);
+      if(Object.keys(user_data.address).length){
+        await data.address.update(address);
+      }
+
+      if(Object.keys(user_data.family_details).length){
+        await data.family_details.update(family_details);
+      }
+
+      await data.save();
+      data.image =data.image.toString()
+      display.end_result(res,200,{"message": "Updated sucessfully","updated_user":data});
+    }
+    else{
+      display.end_result(res,400,{"message": "admin is not found"});
     }
   }
   catch(err){

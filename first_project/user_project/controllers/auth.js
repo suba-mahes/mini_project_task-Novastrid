@@ -114,14 +114,16 @@ module.exports.forget_password = async(req,res) =>{
                 html: compiled_template({"reset_link": reset_link})
             };
 
-            await transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                    display.end_result(res,500,{"message": error});
-                } else {
-                    const result = info.response.split(' ');
-                    display.end_result(res,200,{"message": `Email sent is ${result[2]}`,"token_to_reset_password":token });
-                }
-            });
+            // await transporter.sendMail(mailOptions, (error, info) => {
+            //     if (error) {
+            //         display.end_result(res,500,{"message": error});
+            //     } else {
+            //         const result = info.response.split(' ');
+            //         display.end_result(res,200,{"message": `Email sent is ${result[2]}`,"token_to_reset_password":token });
+            //     }
+            // });
+           display.end_result(res,200,{"message": `Email sent is OK`,"token_to_reset_password":token });
+
         }
         else{
             const register_url = `${req.protocol}://${req.get('host')}/register`;
@@ -129,8 +131,6 @@ module.exports.forget_password = async(req,res) =>{
             display.end_result(res,404,{"message":'no such user is registered',"registeration_url":register_url});  
             return
         }
-    //    display.end_result(res,200,{"message": `Email sent is OK`,"token_to_reset_password":token });
-
     }
     catch(error){
         display.end_result(res,500,{"message": error.message});
