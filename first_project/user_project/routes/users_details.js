@@ -11,6 +11,8 @@ var router = express.Router();
 router.post('/login',auth_validation.login, auth.login);
 router.get('/welcome', auth_validation.authenticate_token, user_details_middlewaer.role_check, auth.welcome);
 
+router.get('/profile', auth_validation.authenticate_token, users_detail.profile);
+
 router.post('/forget-password',auth_validation.forget_password, auth.forget_password);
 router.post('/reset-password', auth_validation.reset_password, auth_validation.authenticate_token, auth.reset_password);
 

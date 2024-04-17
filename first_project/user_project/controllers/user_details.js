@@ -66,6 +66,49 @@ exports.register = async(req, res) => {
   }
 };
 
+exports.profile = async(req,res) => {
+  try{
+    const req_data = req.data;
+
+    let id = parseInt(req_data.user_id); 
+    
+    const data = await user.findOne({
+        attributes: { exclude: ['password','role'] },
+        where : {
+            user_id : id,
+        },
+        include: [
+            {
+            model: user_address, 
+            as: 'address',
+            required: true
+            },
+            {
+            model: user_family,
+            as: 'family_details', 
+            required: true
+            }
+        ],
+    });
+    
+    if(data){ 
+            
+      data.image =data.image.toString()
+      //data.image =data.image.toString('base64')
+    
+      display.end_result(res,200,data);  
+      return;
+    }
+    
+    else{
+      display.end_result(res,400,{"message":'user is not found'});  
+      return;
+    }
+  }
+  catch(err){
+    display.end_result(res,err.status || 500,{"message": err.message || "Some error occurred while retrieving users."})
+  }
+};
 
 exports.findAll = async(req,res) => {
   try{
@@ -112,7 +155,8 @@ exports.findID = async(req,res) => {
     const data = await user.findOne({
         attributes: { exclude: ['password','role'] },
         where : {
-            user_id : id
+            user_id : id,
+            role : 0
         },
         include: [
             {
@@ -129,12 +173,6 @@ exports.findID = async(req,res) => {
     });
     
     if(data){ 
-      
-      if(data.role == 1 && req_data.user_id != id){
-        display.end_result(res,403,{"message": "sorry you don't have the access to view other admins details"});
-        return;
-      }
-      
       data.image =data.image.toString()
       //data.image =data.image.toString('base64')
     

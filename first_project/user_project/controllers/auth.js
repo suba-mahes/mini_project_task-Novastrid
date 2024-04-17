@@ -31,10 +31,15 @@ module.exports.login = async(req,res) =>{
                 display.end_result(res,401,{"message":'Invalid password'});  
                 return;
             }
+            if(data.is_active){
+                const token = jwt.sign({ email_id:data.email_id, role:data.role, is_active:data.is_active, user_id:data.user_id }, config.secret_key, { expiresIn: '1h' });
             
-            const token = jwt.sign({ email_id:data.email_id, role:data.role, is_active:data.is_active, user_id:data.user_id }, config.secret_key, { expiresIn: '1h' });
+                display.end_result(res,200,{'message':"logged in successfully" ,'token':token});
+            }
+            else{
+                display.end_result(res,401,{'message':"Can not login into a in-active user account"});
+            }
             
-            display.end_result(res,200,{'message':"logged in successfully" ,'token':token});
         }
         else{
             display.end_result(res,404,{"message":'user is not found'});  
@@ -85,33 +90,45 @@ module.exports.forget_password = async(req,res) =>{
     try{
         const email_id = req.body.email_id;
 
-        ///const token = jwt.sign({ email_id:data.email_id, role:data.role, is_active:data.is_active, user_id:data.user_id }, config.secret_key, { expiresIn: '1h' });
-
-        const token = jwt.sign({ email_id:email_id }, config.secret_key, { expiresIn: '1h' });
-
-        const reset_link = `${req.protocol}://${req.get('host')}/reset-password?token=${token}`;
-        console.log(reset_link);
-
-        const transporter = nodemailer.createTransport(config.mail_details);
-        const email_template = fs.readFileSync(config.email_template_path, 'utf8');
-        const compiled_template = ejs.compile(email_template);
-        
-
-        const mailOptions = {
-            from: 'insu041831@gmail.com',
-            to: email_id,
-            subject: 'Mail to for Reseting Password',
-            html: compiled_template({"reset_link": reset_link})
-        };
-    
-        await transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                display.end_result(res,500,{"message": error});
-            } else {
-                const result = info.response.split(' ');
-                display.end_result(res,200,{"message": `Email sent is ${result[2]}`,"token_to_reset_password":token });
-            }
+        const data = await user.findOne({
+            where: {
+                email_id : email_id,
+            },
         });
+
+        if(data){
+            const token = jwt.sign({ email_id:email_id }, config.secret_key, { expiresIn: '1h' });
+
+            const reset_link = `${req.protocol}://${req.get('host')}/reset-password?token=${token}`;
+            console.log(reset_link);
+
+            const transporter = nodemailer.createTransport(config.mail_details);
+            const email_template = fs.readFileSync(config.email_template_path, 'utf8');
+            const compiled_template = ejs.compile(email_template);
+            
+
+            const mailOptions = {
+                from: 'insu041831@gmail.com',
+                to: email_id,
+                subject: 'Mail to for Reseting Password',
+                html: compiled_template({"reset_link": reset_link})
+            };
+
+            await transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    display.end_result(res,500,{"message": error});
+                } else {
+                    const result = info.response.split(' ');
+                    display.end_result(res,200,{"message": `Email sent is ${result[2]}`,"token_to_reset_password":token });
+                }
+            });
+        }
+        else{
+            const register_url = `${req.protocol}://${req.get('host')}/register`;
+
+            display.end_result(res,404,{"message":'no such user is registered',"registeration_url":register_url});  
+            return
+        }
     //    display.end_result(res,200,{"message": `Email sent is OK`,"token_to_reset_password":token });
 
     }
@@ -145,8 +162,11 @@ module.exports.reset_password = async(req,res) =>{
             display.end_result(res,200,{'message':"password is reseted in successfully","login_url": login_url });
         }
         else{
-            display.end_result(res,404,{"message":'user is not found'});  
-            return
+            const register_url = `${req.protocol}://${req.get('host')}/register`;
+
+            display.end_result(res,404,{"message":'no such user is registered',"registeration_url":register_url});  
+            
+            return;
         }
     }
     catch(error){

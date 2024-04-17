@@ -132,6 +132,31 @@ describe('users authentication process', function() {
                 done();
             });
     }).timeout(50000);
+    
+    it('To work with forget password', function(done) {
+
+        const req_data = {
+            "email_id" : "xyz0@gmail.com",
+        }
+
+        request(app)
+            .post(`/users/forget-password`)
+            .send(req_data)
+            .expect(404)
+            .end(function(err, res) {
+                if(err) return done(res.body || err);
+
+                if (!res.body || typeof res.body !== 'object') {
+                    return done(new Error('Response body is not an object'));
+                }
+
+                if (res.body.message !== "no such user is registered") {
+                    return done(new Error('error'));
+                }
+
+                done();
+            });
+    }).timeout(50000);
 
     it('To work with forget password', function(done) {
 
@@ -375,6 +400,26 @@ describe('Whole working process on USER SIDE', function() {
             });
     });
     
+    it("profile page - after login", function(done){
+        request(app)
+            .get('/users/profile')
+            .set('Authorization', `Bearer ${user_token}`)
+            .expect(200)
+            .end(function(err, res) {
+                if(err) return done(res.body || err);
+
+                if (!res.body || typeof res.body !== 'object') {
+                    return done(new Error('Response body is not an object'));
+                }
+                
+                const result = res.body; 
+                if(!result.user_id || !result.email_id || !result.first_name || !result.last_name || !result.gender || !result.d_o_b || !result.image || !result.address.address1 || !result.address.address2 || !result.address.city || !result.address.state || !result.address.country || !result.family_details.gardian_name || !result.family_details.mother_name || !result.family_details.gardian_occupation || !result.family_details.mother_occupation){
+                    return done(new Error('error'));
+                }
+                               
+                done();
+            })
+        });
 
     it('should return a user (401 error - you do not have access for this page) on GET ', function(done) {
         request(app)
@@ -571,7 +616,7 @@ describe('unit tests with active status of user', function() {
         request(app)
             .post(`/users/login`)
             .send(req_data)
-            .expect(200)
+            .expect(401)
             .end(function(err, res) {
                 if(err) return done(res.body || err);
 
@@ -579,55 +624,55 @@ describe('unit tests with active status of user', function() {
                     return done(new Error('Response body is not an object'));
                 }
 
-                if (res.body.message !== "logged in successfully") {
-                    return done(new Error('logging is not successfull'));
+                if (res.body.message !== "Can not login into a in-active user account") {
+                    return done(new Error('error'));
                 }
                 user_token = res.body.token
                 done();
             });
     });
 
-    //updating  (403 - error sorry you don't have the access to update these details)
-    it('should update a user (403 - error) on PUT ', function(done) {
-        const req_data = {
-            "first_name": "suba mahes",
-            "last_name": "inba",
-            "gender": "male",
-            "d_o_b": "2001-01-01",
-            "address": {
-                "address1": "1659 ewsb",
-                "address2": "thb colon,villapuram",
-                "city": "Madurai",
-                "state": "Tamil nadu",
-                "country": "Ind"
-            },
-            "family_details":{
-                "gardian_name": "inba",
-                "mother_name": "kane",
-                "gardian_occupation": "off",
-                "mother_occupation": "hwhouse wife"
-            }
-        }
-        request(app)
-            .put(`/users/update-user/${id}`)
-            .set('Authorization', `Bearer ${user_token}`)
-            .send(req_data)
-            .expect(403)
-            .end(function(err, res) {
-                if(err) return done(res.body || err);
+    // //updating  (403 - error sorry you don't have the access to update these details)
+    // it('should update a user (403 - error) on PUT ', function(done) {
+    //     const req_data = {
+    //         "first_name": "suba mahes",
+    //         "last_name": "inba",
+    //         "gender": "male",
+    //         "d_o_b": "2001-01-01",
+    //         "address": {
+    //             "address1": "1659 ewsb",
+    //             "address2": "thb colon,villapuram",
+    //             "city": "Madurai",
+    //             "state": "Tamil nadu",
+    //             "country": "Ind"
+    //         },
+    //         "family_details":{
+    //             "gardian_name": "inba",
+    //             "mother_name": "kane",
+    //             "gardian_occupation": "off",
+    //             "mother_occupation": "hwhouse wife"
+    //         }
+    //     }
+    //     request(app)
+    //         .put(`/users/update-user/${id}`)
+    //         .set('Authorization', `Bearer ${user_token}`)
+    //         .send(req_data)
+    //         .expect(403)
+    //         .end(function(err, res) {
+    //             if(err) return done(res.body || err);
 
-                if (!res.body || typeof res.body !== 'object') {
-                    return done(new Error('Response body is not an object'));
-                }
+    //             if (!res.body || typeof res.body !== 'object') {
+    //                 return done(new Error('Response body is not an object'));
+    //             }
 
-                const result = res.body; 
-                if(result.message !== "sorry you don't have the access to update these details"){
-                    return done(new Error('error'));
-                }
+    //             const result = res.body; 
+    //             if(result.message !== "sorry you don't have the access to update these details"){
+    //                 return done(new Error('error'));
+    //             }
                 
-                done();
-            });
-    });
+    //             done();
+    //         });
+    // });
     
 });
 
@@ -650,6 +695,27 @@ describe('Whole working process on ADMIN SIDE', function() {
                     return done(new Error('error'));
                 }
                 
+                done();
+            })
+    });
+
+    it("profile page - after login", function(done){
+        request(app)
+            .get('/users/profile')
+            .set('Authorization', `Bearer ${user_token}`)
+            .expect(200)
+            .end(function(err, res) {
+                if(err) return done(res.body || err);
+
+                if (!res.body || typeof res.body !== 'object') {
+                    return done(new Error('Response body is not an object'));
+                }
+                
+                const result = res.body; 
+                if(!result.user_id || !result.email_id || !result.first_name || !result.last_name || !result.gender || !result.d_o_b || !result.image || !result.address.address1 || !result.address.address2 || !result.address.city || !result.address.state || !result.address.country || !result.family_details.gardian_name || !result.family_details.mother_name || !result.family_details.gardian_occupation || !result.family_details.mother_occupation){
+                    return done(new Error('error'));
+                }
+                               
                 done();
             })
     });
