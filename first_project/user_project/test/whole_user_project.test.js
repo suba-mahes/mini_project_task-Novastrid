@@ -11,12 +11,12 @@ before(function(done) {
 });
 
 beforeEach(function(done){
-    console.log("\nlet's start the test : ");
+    console.log("\n\nlet's start the test : \n");
     done();
 });
 
 afterEach(function(done){
-    console.log("---let's end the test---\n");
+    console.log("\n---let's end the test---\n\n");
     done();
 });
 
@@ -955,6 +955,187 @@ describe('Whole working process on ADMIN SIDE', function() {
                     return done(new Error('error'));
                 }
 
+                done();
+            });
+    }).timeout(50000);
+
+});
+
+describe('unit test cases for JOI VALIDATION', function() {
+    
+    it('should give joi validation error for "password is required" ', function(done) {
+
+        const req_data = {
+            "email_id" : "admin@gmail.com",
+            //"password" : "Admin@123"
+        }
+
+        request(app)
+            .post(`/users/login`)
+            .send(req_data)
+            .expect(500)
+            .end(function(err, res) {
+                if(err) return done(res.body || err);
+
+                if (!res.body || typeof res.body !== 'object') {
+                    return done(new Error('Response body is not an object'));
+                }
+
+                if (!Array.isArray(res.body.message)) {
+                    return done(new Error('Response body is not an array'));
+                }
+                 console.log(res.body.message)
+                if (!res.body.message.includes("password is required")) {
+                    return done(new Error('error'));
+                }
+                
+                done();
+            });
+    }).timeout(50000);
+
+    it('should give joi validation error for "email_id is required" ', function(done) {
+
+        const req_data = {
+            //"email_id" : "admin@gmail.com",
+            "password" : "Admin@123"
+        }
+
+        request(app)
+            .post(`/users/login`)
+            .send(req_data)
+            .expect(500)
+            .end(function(err, res) {
+                if(err) return done(res.body || err);
+
+                if (!res.body || typeof res.body !== 'object') {
+                    return done(new Error('Response body is not an object'));
+                }
+
+                if (!Array.isArray(res.body.message)) {
+                    return done(new Error('Response body is not an array'));
+                }
+                 
+                if (!res.body.message.includes("email is required")) {
+                    return done(new Error('error'));
+                }
+                
+                done();
+            });
+    }).timeout(50000);
+
+    it('should give joi validation error when unwanted key-value is been added in request ', function(done) {
+
+        const req_data = {
+            "email_id" : "admin@gmail.com",
+            "password" : "Admin@123",
+            "val" : "bidhsfd"
+        }
+
+        request(app)
+            .post(`/users/login`)
+            .send(req_data)
+            .expect(500)
+            .end(function(err, res) {
+                if(err) return done(res.body || err);
+
+                if (!res.body || typeof res.body !== 'object') {
+                    return done(new Error('Response body is not an object'));
+                }
+
+                if (!Array.isArray(res.body.message)) {
+                    return done(new Error('Response body is not an array'));
+                }
+                 
+                if (!res.body.message.includes("\"val\" is not allowed")) {
+                    return done(new Error('error'));
+                }
+                
+                done();
+            });
+    }).timeout(50000);
+
+    it('should give joi validation error when email format is wrong in request ', function(done) {
+
+        const req_data = {
+            "email_id" : "admingmail.com",
+            "password" : "Admin@123"
+        }
+
+        request(app)
+            .post(`/users/login`)
+            .send(req_data)
+            .expect(500)
+            .end(function(err, res) {
+                if(err) return done(res.body || err);
+
+                if (!res.body || typeof res.body !== 'object') {
+                    return done(new Error('Response body is not an object'));
+                }
+
+                if (!Array.isArray(res.body.message)) {
+                    return done(new Error('Response body is not an array'));
+                }
+                 
+                if (!res.body.message.includes("some thing is missing in email format")) {
+                    return done(new Error('error'));
+                }
+                
+                done();
+            });
+    }).timeout(50000);
+
+    it('should give joi validation error when pattern and minimun required character is wrong in request ', function(done) {
+
+        const req_data = {
+            "email_id" : "admin@gmail.com",
+            "password" : "Ad"
+        }
+
+        request(app)
+            .post(`/users/login`)
+            .send(req_data)
+            .expect(500)
+            .end(function(err, res) {
+                if(err) return done(res.body || err);
+
+                if (!res.body || typeof res.body !== 'object') {
+                    return done(new Error('Response body is not an object'));
+                }
+
+                if (!Array.isArray(res.body.message)) {
+                    return done(new Error('Response body is not an array'));
+                }
+                 
+                if (!res.body.message.includes("password must be atleast 8 character") && res.body.message.includes("Password must be alphanumeric and between 3-10 characters long")) {
+                    return done(new Error('error'));
+                }
+                
+                done();
+            });
+    }).timeout(50000);
+
+    it('proper login for a admin on post ', function(done) {
+
+        const req_data = {
+            "email_id" : "admin@gmail.com",
+            "password" : "Admin@123"
+        }
+
+        request(app)
+            .post(`/users/login`)
+            .send(req_data)
+            .expect(200)
+            .end(function(err, res) {
+                if(err) return done(res.body || err);
+
+                if (!res.body || typeof res.body !== 'object') {
+                    return done(new Error('Response body is not an object'));
+                }
+
+                if (res.body.message !== "logged in successfully") {
+                    return done(new Error('logging is not successfull'));
+                }
+                admin_token = res.body.token
                 done();
             });
     }).timeout(50000);

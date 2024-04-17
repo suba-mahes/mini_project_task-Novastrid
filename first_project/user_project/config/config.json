@@ -3,7 +3,7 @@
         "host": "localhost",
         "username": "root",
         "password": "insu0418",
-        "database": "db_try",
+        "database": "user_detail_db",
         "dialect": "mysql",
         "pool": {
             "max": 5,
