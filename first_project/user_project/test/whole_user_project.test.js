@@ -8,7 +8,7 @@ before(function(done) {
         console.log('Sequelize models synced for testing\n');
         done();
     }).catch(done);
-});
+}).timeout(50000);
 
 beforeEach(function(done){
     console.log("\nlet's start the test : ");
@@ -702,7 +702,7 @@ describe('Whole working process on ADMIN SIDE', function() {
     it("profile page - after login", function(done){
         request(app)
             .get('/users/profile')
-            .set('Authorization', `Bearer ${user_token}`)
+            .set('Authorization', `Bearer ${admin_token}`)
             .expect(200)
             .end(function(err, res) {
                 if(err) return done(res.body || err);
