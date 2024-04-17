@@ -26,7 +26,7 @@ let id;
 const fake_id = 122;
 
 describe('register a user', function() {
-    const filePath = 'C:\\Users\\MY PC\\Desktop\\inba\\vietnam - flag.png';
+    const filePath = 'C:/Users/MY PC/Desktop/inba/vietnam - flag.png';
     it('should register a user on post ', function(done) {
 
         request(app)

@@ -29,8 +29,18 @@ exports.register = async(req, res) => {
     });
   
     if(check_data){
-        display.end_result(res,200,{'message':"Already registerd email_id"});
-        return;
+      
+      if (fs.existsSync(user_data.image)) {
+        fs.unlink(user_data.image, (err) => {
+          if (err) {
+            display.end_result(res,err.status  || 500,{"message": err.message || "Some error occurred while deleting the user."});
+            return;
+          } 
+        });
+      }
+
+      display.end_result(res,200,{'message':"Already registerd email_id"});
+      return;
     }
 
     const data = await user.create(user_data,
