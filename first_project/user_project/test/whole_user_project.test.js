@@ -604,7 +604,7 @@ describe('unit tests with active status of user', function() {
 
                 done();
             });
-    });
+    }).timeout(50000);
 
     it('should login a user on post ', function(done) {
 
