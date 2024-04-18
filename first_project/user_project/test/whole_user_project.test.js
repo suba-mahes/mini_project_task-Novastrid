@@ -26,13 +26,13 @@ let id;
 const fake_id = 122;
 
 describe('register a user', function() {
-    const filePath = 'C:/Users/MY PC/Desktop/inba/vietnam - flag.png';
+    const file_path = 'C:/Users/MY PC/Desktop/inba/vietnam - flag.png';
     it('should register a user on post ', function(done) {
 
         request(app)
             .post(`/users/register`)
             .set('Content-Type', 'multipart/form-data')
-            .attach('image', filePath)
+            .attach('image', file_path)
             .field('email_id', 'prabakaraninba0@gmail.com')
             .field('password', 'Password@123')
             .field('first_name', 'suba')
@@ -71,7 +71,7 @@ describe('register a user', function() {
         request(app)
             .post(`/users/register`)
             .set('Content-Type', 'multipart/form-data')
-            .attach('image', filePath)
+            .attach('image', file_path)
             .field('email_id', 'prabakaraninba0@gmail.com')
             .field('password', 'Password@123')
             .field('first_name', 'suba')
@@ -526,7 +526,7 @@ describe('Whole working process on USER SIDE', function() {
                 done();
             });
     }).timeout(50000);
-
+    
     //updating the admin profile
     it('should update the admin profile (401 error - you do not have access for this page) on PUT method ', function(done) {
         const req_data = {
@@ -594,6 +594,32 @@ describe('Whole working process on USER SIDE', function() {
             .put(`/users/update-user-profile`)
             .set('Authorization', `Bearer ${user_token}`)
             .send(req_data)
+            .expect(200)
+            .end(function(err, res) {
+                if(err) return done(res.body || err);
+
+                if (!res.body || typeof res.body !== 'object') {
+                    return done(new Error('Response body is not an object'));
+                }
+
+                const result = res.body.updated_user; 
+                if(!result.user_id || !result.email_id || !result.first_name || !result.last_name || !result.gender || !result.d_o_b || !result.image || !result.address.address1 || !result.address.address2 || !result.address.city || !result.address.state || !result.address.country || !result.family_details.gardian_name || !result.family_details.mother_name || !result.family_details.gardian_occupation || !result.family_details.mother_occupation){
+                    return done(new Error('updation is not successfull'));
+                }
+
+                done();
+            });
+    }).timeout(50000);
+
+    //updating the user profile image
+    it('should update the user profile on PUT method ', function(done) {
+        const file_path = 'C:/Users/MY PC/Desktop/inba/srilanka - flag.png';
+        
+        request(app)
+            .put(`/users/update-user-profile-image`)
+            .set('Authorization', `Bearer ${user_token}`)
+            .set('Content-Type', 'multipart/form-data')
+            .attach('image', file_path)
             .expect(200)
             .end(function(err, res) {
                 if(err) return done(res.body || err);
@@ -995,6 +1021,32 @@ describe('Whole working process on ADMIN SIDE', function() {
             });
     }).timeout(50000);
 
+    //updating the user profile image (401 error)
+    it('should update the user profile (401 error - you do not have access for this page) on PUT method ', function(done) {
+        const file_path = 'C:/Users/MY PC/Desktop/inba/srilanka - flag.png';
+        
+        request(app)
+            .put(`/users/update-user-profile-image`)
+            .set('Authorization', `Bearer ${user_token}`)
+            .set('Content-Type', 'multipart/form-data')
+            .attach('image', file_path)
+            .expect(401)
+            .end(function(err, res) {
+                if(err) return done(res.body || err);
+
+                if (!res.body || typeof res.body !== 'object') {
+                    return done(new Error('Response body is not an object'));
+                }
+
+                const result = res.body; 
+                if(result.message !== "you do not have access for this page"){
+                    return done(new Error('error'));
+                }
+
+                done();
+            });
+    }).timeout(50000);
+
     //updating the admin profile
     it('should update the admin profile on PUT method ', function(done) {
         const req_data = {
@@ -1151,7 +1203,6 @@ describe('unit test cases for JOI VALIDATION', function() {
                 if (!Array.isArray(res.body.message)) {
                     return done(new Error('Response body is not an array'));
                 }
-                 console.log(res.body.message)
                 if (!res.body.message.includes("password is required")) {
                     return done(new Error('error'));
                 }

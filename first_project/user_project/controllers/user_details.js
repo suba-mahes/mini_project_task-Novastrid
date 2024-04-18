@@ -356,27 +356,68 @@ exports.updateProfile = async(req,res) =>{
       ],
     });
     
-    if(data){    
 //      await data.update(user_data);
 
-      const { address, family_details, ...only_user_data } = user_data;
+    const { address, family_details, ...only_user_data } = user_data;
 
-      await data.update(only_user_data);
-      if(Object.keys(user_data.address).length){
-        await data.address.update(address);
-      }
-
-      if(Object.keys(user_data.family_details).length){
-        await data.family_details.update(family_details);
-      }
-
-      await data.save();
-      data.image =data.image.toString()
-      display.end_result(res,200,{"message": "Updated sucessfully","updated_user":data});
+    await data.update(only_user_data);
+    if(Object.keys(user_data.address).length){
+      await data.address.update(address);
     }
-    else{
-      display.end_result(res,400,{"message": "admin is not found"});
+
+    if(Object.keys(user_data.family_details).length){
+      await data.family_details.update(family_details);
     }
+
+    await data.save();
+    data.image =data.image.toString()
+    display.end_result(res,200,{"message": "Updated sucessfully","updated_user":data});
+  }
+  catch(err){
+    display.end_result(res,err.status  || 500,{"message": err.message || "Some error occurred while updating the user."})
+  }
+};
+
+exports.updateProfileImage = async(req,res) =>{
+  try{
+    let id = parseInt(req.data.user_id);
+    
+    const user_data = {
+      image : req.file.path
+    }
+
+    const data = await user.findByPk(id,{
+      attributes: { exclude: ['password','role'] },
+      include: [
+          {
+          model: user_address, 
+          as: 'address',
+          required: true
+          },
+          {
+          model: user_family,
+          as: 'family_details', 
+          required: true
+          }
+      ],
+    });
+  
+    
+    if (fs.existsSync(data.image)) {
+      fs.unlink(data.image, (err) => {
+        if (err) {
+          display.end_result(res,err.status  || 500,{"message": err.message || "Some error occurred while deleting the user."});
+          return;
+        } 
+      });
+    }
+    
+    await data.update(user_data);
+    await data.save();
+
+    data.image =data.image.toString()
+    display.end_result(res,200,{"message": "Updated sucessfully","updated_user":data});
+
   }
   catch(err){
     display.end_result(res,err.status  || 500,{"message": err.message || "Some error occurred while updating the user."})
