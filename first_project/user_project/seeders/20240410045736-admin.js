@@ -6,6 +6,8 @@ const bcrypt = require('bcrypt');
 const db = require("../models/index");
 const user_model = db.user;
 
+const config = require("../config/config.json")
+
 module.exports = {
   async up(queryInterface, Sequelize) {
     const users = await user_model.bulkCreate([
@@ -17,7 +19,7 @@ module.exports = {
         first_name: "admin",
         last_name: "admin",
         gender: "female",
-        image: "../user_project/file_images/admin_admin.jpg",
+        image: config.image_upload_directory+"admin_admin.jpg",
         d_o_b: new Date('1990-01-01')
       },
     ], { returning: true });

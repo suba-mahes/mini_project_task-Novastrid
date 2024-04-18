@@ -17,7 +17,7 @@ module.exports = {
         first_name: "aaa",
         last_name: "bbb",
         gender: "female",
-        image: "../user_project/file_images/Marina_aaa.jpg",
+        image: config.image_upload_directory+"Marina_aaa.jpg",
         d_o_b: new Date('2001-01-01')
       },
     ], { returning: true });
