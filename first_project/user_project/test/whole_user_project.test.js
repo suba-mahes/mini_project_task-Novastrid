@@ -1027,11 +1027,12 @@ describe('Whole working process on ADMIN SIDE', function() {
         
         request(app)
             .put(`/users/update-user-profile-image`)
-            .set('Authorization', `Bearer ${user_token}`)
+            .set('Authorization', `Bearer ${admin_token}`)
             .set('Content-Type', 'multipart/form-data')
             .attach('image', file_path)
             .expect(401)
             .end(function(err, res) {
+                console.log(err)
                 if(err) return done(res.body || err);
 
                 if (!res.body || typeof res.body !== 'object') {

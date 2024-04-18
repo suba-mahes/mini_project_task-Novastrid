@@ -1,4 +1,3 @@
-const fs = require('fs');
 
 const bcrypt = require('bcrypt');
 
@@ -7,7 +6,7 @@ const user = db.user;
 const user_address = db.user_address;
 const user_family = db.user_family;
 
-
+var delete_image = require("../middlewares/delete_image_file.js")
 var display = require("../controllers/result_display.js");
 
 
@@ -30,14 +29,7 @@ exports.register = async(req, res) => {
   
     if(check_data){
       
-      if (fs.existsSync(user_data.image)) {
-        fs.unlink(user_data.image, (err) => {
-          if (err) {
-            display.end_result(res,err.status  || 500,{"message": err.message || "Some error occurred while deleting the user."});
-            return;
-          } 
-        });
-      }
+      delete_image.delete(user_data.image);
 
       display.end_result(res,200,{'message':"Already registerd email_id"});
       return;
@@ -256,14 +248,7 @@ exports.deleteByID = async(req,res) =>{
 
     if(result){
 
-      if (fs.existsSync(result.image)) {
-        fs.unlink(result.image, (err) => {
-          if (err) {
-            display.end_result(res,err.status  || 500,{"message": err.message || "Some error occurred while deleting the user."});
-            return;
-          } 
-        });
-      }
+      delete_image.delete(result.image);
       
       const data = await user.destroy({
         where: { 
@@ -403,14 +388,7 @@ exports.updateProfileImage = async(req,res) =>{
     });
   
     
-    if (fs.existsSync(data.image)) {
-      fs.unlink(data.image, (err) => {
-        if (err) {
-          display.end_result(res,err.status  || 500,{"message": err.message || "Some error occurred while deleting the user."});
-          return;
-        } 
-      });
-    }
+    delete_image.delete(data.image);
     
     await data.update(user_data);
     await data.save();

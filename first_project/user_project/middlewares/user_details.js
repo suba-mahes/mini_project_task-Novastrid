@@ -1,4 +1,5 @@
 var user_detail = require('../validation/user_detail_schema.js')
+var delete_image = require("../middlewares/delete_image_file.js")
 
 var validation = require('../validation/validation_for_update.js')
 var display = require("../controllers/result_display.js");
@@ -15,8 +16,14 @@ module.exports.role_check = async(req, res, next)=>{
 module.exports.user_role_check = async(req, res, next)=>{
   const req_data = req.data;
   if(req_data.role != 0){
-      display.end_result(res,401,{"message": "you do not have access for this page"});  
-      return;  
+    display.end_result(res,401,{"message": "you do not have access for this page"});  
+    if(!req.file.path){
+      return;
+    }
+    else{
+        await delete_image.delete(req.file.path);
+        return;
+    }
   }
   next();
 }

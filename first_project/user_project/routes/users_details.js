@@ -33,7 +33,7 @@ router.put('/update-user-profile', auth_validation.authenticate_token, user_deta
 router.put('/update-admin-profile', auth_validation.authenticate_token, user_details_middleware.role_check, user_details_middleware.update_request_validation, users_detail.updateProfile);
 
 
-router.put('/update-user-profile-image', auth_validation.authenticate_token, user_details_middleware.user_role_check, upload.single('image'), users_detail.updateProfileImage);
+router.put('/update-user-profile-image', upload.single('image'), auth_validation.authenticate_token, user_details_middleware.user_role_check,  users_detail.updateProfileImage);
 
 
 router.delete('/delete-user-by-id/:id',auth_validation.authenticate_token,user_details_middleware.id_params_check, user_details_middleware.role_check , users_detail.deleteByID);
