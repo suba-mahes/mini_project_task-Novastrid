@@ -324,6 +324,79 @@
 			"response": []
 		},
 		{
+			"name": "admin-profile-update",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{token}}"
+					}
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"first_name\": \"suba mahes\",\r\n    \"last_name\": \"inba\",\r\n    \"gender\": \"male\",\r\n    \"d_o_b\": \"2001-01-01\",\r\n    \"address\": {\r\n        \"address1\": \"1659 ewsb\",\r\n        \"address2\": \"th,villapuram\",\r\n        \"city\": \"MDU\",\r\n        \"state\": \"Tamil nadu\",\r\n        \"country\": \"India\"\r\n    },\r\n    \"family_details\":{\r\n        \"gardian_name\": \"inba\",\r\n        \"mother_name\": \"kane\",\r\n        \"gardian_occupation\": \"office\",\r\n        \"mother_occupation\": \"housewife\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{url}}{{user}}/update-admin-profile"
+			},
+			"response": []
+		},
+		{
+			"name": "user-profile-update",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{token}}"
+					}
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"first_name\": \"suba mahes\",\r\n    \"last_name\": \"inba\",\r\n    \"gender\": \"male\",\r\n    \"d_o_b\": \"2001-01-01\",\r\n    \"address\": {\r\n        \"address1\": \"1659 ewsb\",\r\n        \"address2\": \"th,villapuram\",\r\n        \"city\": \"MDU\",\r\n        \"state\": \"Tamil nadu\",\r\n        \"country\": \"India\"\r\n    },\r\n    \"family_details\":{\r\n        \"gardian_name\": \"inba\",\r\n        \"mother_name\": \"kane\",\r\n        \"gardian_occupation\": \"office\",\r\n        \"mother_occupation\": \"housewife\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{url}}{{user}}/update-user-profile"
+			},
+			"response": []
+		},
+		{
+			"name": "user-profile-image-update",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{token}}"
+					}
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/C:/Users/MY PC/Desktop/inba/singapore/Ice cream musuem.jpg"
+						}
+					]
+				},
+				"url": "{{url}}{{user}}/update-user-profile-image"
+			},
+			"response": []
+		},
+		{
 			"name": "user-details-update status",
 			"event": [
 				{
