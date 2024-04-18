@@ -6,6 +6,8 @@ const bcrypt = require('bcrypt');
 const db = require("../models/index");
 const user_model = db.user;
 
+const config = require("../config/config.json")
+
 module.exports = {
   async up(queryInterface, Sequelize) {
     const users = await user_model.bulkCreate([
