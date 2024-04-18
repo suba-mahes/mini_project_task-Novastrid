@@ -23,22 +23,22 @@ router.post('/register', upload.single('image'), auth_validation.reqister, users
 
 
 router.get('/get-allusers',auth_validation.authenticate_token, user_details_middleware.role_check, users_detail.findAll);
-router.get('/get-user-by-id/:id',auth_validation.authenticate_token, user_details_middleware.id_params_check,user_details_middleware.role_check, users_detail.findID);
+router.get('/get-user-by-id/:id',auth_validation.authenticate_token, user_details_middleware.role_check_and_id_params_check, users_detail.findID);
 
 
-router.put('/update-user/:id', auth_validation.authenticate_token, user_details_middleware.id_params_check, user_details_middleware.update_user, users_detail.updateByID);
+router.put('/update-user/:id', auth_validation.authenticate_token, user_details_middleware.update_user, users_detail.updateByID);
 
 
-router.put('/update-user-profile', auth_validation.authenticate_token, user_details_middleware.user_role_check, user_details_middleware.update_request_validation, users_detail.updateProfile);
-router.put('/update-admin-profile', auth_validation.authenticate_token, user_details_middleware.role_check, user_details_middleware.update_request_validation, users_detail.updateProfile);
+router.put('/update-user-profile', auth_validation.authenticate_token, user_details_middleware.update_user_profile, users_detail.updateProfile);
+router.put('/update-admin-profile', auth_validation.authenticate_token, user_details_middleware.update_admin_profile, users_detail.updateProfile);
 
 
-router.put('/update-user-profile-image', upload.single('image'), auth_validation.authenticate_token, user_details_middleware.user_role_check,  users_detail.updateProfileImage);
+router.put('/update-user-profile-image', upload.single('image'), auth_validation.authenticate_token, user_details_middleware.update_user_profile_image,  users_detail.updateProfileImage);
 
 
-router.delete('/delete-user-by-id/:id',auth_validation.authenticate_token,user_details_middleware.id_params_check, user_details_middleware.role_check , users_detail.deleteByID);
+router.delete('/delete-user-by-id/:id',auth_validation.authenticate_token,user_details_middleware.role_check_and_id_params_check , users_detail.deleteByID);
 
 
-router.patch('/update-user-status/:id', auth_validation.authenticate_token, user_details_middleware.id_params_check,user_details_middleware.role_check, user_details_middleware.update_user_status, users_detail.updateStatus);
+router.patch('/update-user-status/:id', auth_validation.authenticate_token, user_details_middleware.update_user_status, users_detail.updateStatus);
 
 module.exports = router;

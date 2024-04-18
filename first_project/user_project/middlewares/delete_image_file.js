@@ -10,7 +10,4 @@ exports.delete =  async(filePath, res) => {
             }
         });
     }
-    else{
-      console.log("hai")
-    }
 };

@@ -939,7 +939,7 @@ describe('Whole working process on ADMIN SIDE', function() {
 
 
     //updating
-    it('should update a user on PUT (403 - error admin can access this feature)', function(done) {
+    it('should update a user on PUT (401 - error admin can not access this feature)', function(done) {
         const req_data = {
             "first_name": "suba mahes",
             "last_name": "inba",
@@ -963,7 +963,7 @@ describe('Whole working process on ADMIN SIDE', function() {
             .put(`/users/update-user/${id}`)
             .set('Authorization', `Bearer ${admin_token}`)
             .send(req_data)
-            .expect(403)
+            .expect(401)
             .end(function(err, res) {
                 if(err) return done(res.body || err);
 
@@ -971,7 +971,7 @@ describe('Whole working process on ADMIN SIDE', function() {
                     return done(new Error('Response body is not an object'));
                 }
 
-                if (res.body.message !== "sorry you don't have the access to update user's details") {
+                if (res.body.message !== "you do not have access for this page") {
                     return done(new Error('error'));
                 }
 
