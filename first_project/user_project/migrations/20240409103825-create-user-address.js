@@ -1,52 +1,49 @@
-'use strict';
+"use strict";
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('user_addresses', 
-    { 
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable("user_addresses", {
       user_address_id: {
         allowNull: false,
         type: Sequelize.INTEGER,
         autoIncrement: true,
-        primaryKey: true
+        primaryKey: true,
       },
       address1: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       address2: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
-      city:{
+      city: {
         allowNull: true,
-        type:Sequelize.STRING
+        type: Sequelize.STRING,
       },
-      state:{
+      state: {
         allowNull: true,
-        type:Sequelize.STRING
+        type: Sequelize.STRING,
       },
-      country:{
+      country: {
         allowNull: true,
-        type:Sequelize.STRING
+        type: Sequelize.STRING,
       },
-      user_id:{
+      user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'users',
-          key: 'user_id'
+          model: "users",
+          key: "user_id",
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
-    }
-  );
-
+    });
   },
 
-  async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('user_addresses');
-  }
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable("user_addresses");
+  },
 };

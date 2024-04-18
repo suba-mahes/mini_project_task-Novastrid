@@ -1,59 +1,56 @@
-'use strict';
+"use strict";
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('users', 
-    { 
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable("users", {
       user_id: {
         allowNull: false,
         type: Sequelize.INTEGER,
         autoIncrement: true,
-        primaryKey: true
+        primaryKey: true,
       },
       is_active: {
         allowNull: false,
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       role: {
         allowNull: false,
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
-      email_id:{
+      email_id: {
         allowNull: true,
-        type:Sequelize.STRING,
-        unique: true
+        type: Sequelize.STRING,
+        unique: true,
       },
       password: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
-     first_name: {
-       allowNull: false,
-       type: Sequelize.STRING
-     },
-     last_name: {
-       allowNull: true,
-       type: Sequelize.STRING
-     },
-     gender:{
-      allowNull: false,
-      type:Sequelize.STRING,
-     },
-     d_o_b:{
-      allowNull: false,
-      type: Sequelize.DATE
-     },
-     image: {
-      type: Sequelize.BLOB,
-      allowNull: false
+      first_name: {
+        allowNull: false,
+        type: Sequelize.STRING,
       },
-    }
-  );
-
+      last_name: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
+      gender: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      d_o_b: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      image: {
+        type: Sequelize.BLOB,
+        allowNull: false,
+      },
+    });
   },
 
-  async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('users');
-  }
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable("users");
+  },
 };

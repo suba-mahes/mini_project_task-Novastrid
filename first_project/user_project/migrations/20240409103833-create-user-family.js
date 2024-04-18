@@ -1,52 +1,49 @@
-'use strict';
+"use strict";
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('user_families', 
-    { 
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable("user_families", {
       user_family_id: {
         allowNull: false,
         type: Sequelize.INTEGER,
         autoIncrement: true,
-        primaryKey: true
+        primaryKey: true,
       },
-     gardian_name: {
-       allowNull: false,
-       type: Sequelize.STRING
-     },
-     mother_name: {
-       allowNull: false,
-       type: Sequelize.STRING
-     },
-     gardian_occupation:{
-       allowNull: false,
-       type:Sequelize.STRING
-     },
-     mother_occupation:{
-      allowNull: false,
-      type:Sequelize.STRING
-    },
-    no_of_sibilings:{
-      allowNull: false,
-      type:Sequelize.INTEGER
-    },
-    user_id:{
-      type: Sequelize.INTEGER,
+      gardian_name: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      mother_name: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      gardian_occupation: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      mother_occupation: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      no_of_sibilings: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
+      user_id: {
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'users',
-          key: 'user_id'
+          model: "users",
+          key: "user_id",
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-    },
-    }
-  );
-
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+    });
   },
 
-  async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('user_families');
-  }
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable("user_families");
+  },
 };
