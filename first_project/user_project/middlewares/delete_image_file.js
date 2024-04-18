@@ -1,14 +1,16 @@
 const fs = require('fs');
+const display = require("../controllers/result_display");
 
-exports.delete = (data) =>{
-    
-    if (fs.existsSync(data)) {
-        fs.unlink(data, (err) => {
-          if (err) {
-            display.end_result(res,err.status  || 500,{"message": err.message || "Some error occurred while deleting the user."});
-            return;
-          } 
+exports.delete =  async(filePath, res) => {
+    if (fs.existsSync(filePath)) {
+        fs.unlink(filePath, (err) => {
+            if (err) {
+              display.end_result(res, err.status || 500, { "message": err.message || "Some error occurred." });
+              return;
+            }
         });
     }
-
-}
+    else{
+      console.log("hai")
+    }
+};

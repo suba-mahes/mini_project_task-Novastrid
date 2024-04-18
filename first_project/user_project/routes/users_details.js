@@ -1,12 +1,12 @@
-var express = require('express');
+const express = require('express');
 const users_detail = require('../controllers/user_details.js');
-var auth = require('../controllers/auth.js');
+const auth = require('../controllers/auth.js');
 
-var auth_validation = require('../middlewares/auth.js');
-var upload = require("../middlewares/multer_middleware.js");
-var user_details_middleware = require("../middlewares/user_details.js")
+const auth_validation = require('../middlewares/auth.js');
+const upload = require("../middlewares/multer_middleware.js");
+const user_details_middleware = require("../middlewares/user_details.js")
 
-var router = express.Router();
+const router = express.Router();
 
 router.post('/login',auth_validation.login, auth.login);
 router.get('/welcome', auth_validation.authenticate_token, user_details_middleware.role_check, auth.welcome);

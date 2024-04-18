@@ -10,7 +10,7 @@ const user = db.user;
 const user_address = db.user_address;
 const user_family = db.user_family;
 
-var display = require("../controllers/result_display.js");
+const display = require("../controllers/result_display.js");
 const config = require("../config/config.json")
 
 

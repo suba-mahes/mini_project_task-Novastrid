@@ -1,10 +1,10 @@
-var user_detail = require('../validation/user_detail_schema.js')
-var delete_image = require("../middlewares/delete_image_file.js")
+const user_detail = require('../validation/user_detail_schema.js')
+const delete_image = require("../middlewares/delete_image_file.js")
 
-var validation = require('../validation/validation_for_update.js')
-var display = require("../controllers/result_display.js");
+const validation = require('../validation/validation_for_update.js')
+const display = require("../controllers/result_display.js");
 
-module.exports.role_check = async(req, res, next)=>{
+module.exports.role_check = (req, res, next)=>{
     const req_data = req.data;
     if(req_data.role != 1){
         display.end_result(res,401,{"message": "you do not have access for this page"});  
@@ -15,20 +15,25 @@ module.exports.role_check = async(req, res, next)=>{
 
 module.exports.user_role_check = async(req, res, next)=>{
   const req_data = req.data;
+  
   if(req_data.role != 0){
+    if (req.file && req.file.path) {
+      try {
+        console.log("hai")
+        await delete_image.delete(req.file.path,res);
+      }
+  
+      catch(error){
+        display.end_result(res,err.status  || 500,{"message": error.message || "Some error occurred."});
+      }
+    }
     display.end_result(res,401,{"message": "you do not have access for this page"});  
-    if(!req.file.path){
-      return;
-    }
-    else{
-        await delete_image.delete(req.file.path);
-        return;
-    }
+    return;
   }
   next();
 }
 
-module.exports.id_params_check = async(req, res, next)=>{
+module.exports.id_params_check = (req, res, next)=>{
     let id = parseInt(req.params.id);
     if(!id){
       display.end_result(res,403,{"message":'parameter is empty'});  
@@ -37,8 +42,8 @@ module.exports.id_params_check = async(req, res, next)=>{
     next();
 }
 
-module.exports.update_request_validation = async(req, res, next)=>{
-  const error =  await validation.update_validation(req.body);
+module.exports.update_request_validation = (req, res, next)=>{
+  const error =  validation.update_validation(req.body);
   
   if(error.length){
       display.end_result(res,400,{"error_message": "Invalid request","message": `the request contains ${error}`});
@@ -47,13 +52,13 @@ module.exports.update_request_validation = async(req, res, next)=>{
   next();
 }
 
-module.exports.update_user = async(req, res, next)=>{
+module.exports.update_user = (req, res, next)=>{
     let id = parseInt(req.params.id);
     const req_data = req.data;
  
     if(req_data.role == 0){ 
 
-      const error =  await validation.update_validation(req.body);
+      const error =  validation.update_validation(req.body);
 
       if(error.length){
           display.end_result(res,400,{"error_message": "Invalid request","message": `the request contains ${error}`});
@@ -74,7 +79,7 @@ module.exports.update_user = async(req, res, next)=>{
 
 
 
-module.exports.update_user_status = async(req, res, next)=>{
+module.exports.update_user_status = (req, res, next)=>{
   const { error, value } =  user_detail.user_status_update_data_schema.validate(req.body, { abortEarly: false });
   
   if(error){

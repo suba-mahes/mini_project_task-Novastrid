@@ -6,8 +6,8 @@ const user = db.user;
 const user_address = db.user_address;
 const user_family = db.user_family;
 
-var delete_image = require("../middlewares/delete_image_file.js")
-var display = require("../controllers/result_display.js");
+const delete_image = require("../middlewares/delete_image_file.js")
+const display = require("../controllers/result_display.js");
 
 
 exports.register = async(req, res) => {
@@ -29,7 +29,7 @@ exports.register = async(req, res) => {
   
     if(check_data){
       
-      delete_image.delete(user_data.image);
+      await delete_image.delete(user_data.image,res);
 
       display.end_result(res,200,{'message':"Already registerd email_id"});
       return;
@@ -248,7 +248,7 @@ exports.deleteByID = async(req,res) =>{
 
     if(result){
 
-      delete_image.delete(result.image);
+      await delete_image.delete(result.image,res);
       
       const data = await user.destroy({
         where: { 
@@ -388,7 +388,7 @@ exports.updateProfileImage = async(req,res) =>{
     });
   
     
-    delete_image.delete(data.image);
+    await delete_image.delete(data.image,res);
     
     await data.update(user_data);
     await data.save();

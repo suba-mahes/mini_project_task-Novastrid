@@ -1,4 +1,4 @@
-var display = require("../controllers/result_display.js");
+const display = require("../controllers/result_display.js");
 
 
 module.exports.update_validation = (data)=>{

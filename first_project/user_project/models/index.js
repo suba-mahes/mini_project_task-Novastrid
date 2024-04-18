@@ -1,4 +1,4 @@
-var env = "development";
+const env = "development";
 const config = require("../config/config.json")[env];
 
 const Sequelize = require("sequelize");
