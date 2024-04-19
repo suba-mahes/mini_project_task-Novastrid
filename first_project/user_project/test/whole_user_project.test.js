@@ -23,7 +23,7 @@ afterEach(function (done) {
   done();
 });
 
-before(function (done) {
+after(function (done) {
   console.log("\n\n Completed running all the TEST CASES");
   done();
 });
@@ -531,7 +531,7 @@ describe("Whole working process on USER SIDE", function () {
       });
   }).timeout(50000);
 
-  //updating  (403 - error sorry you don't have the access to update other's details)
+  //updating  (403 - error sorry you don't have the access to update other's details (please check the id in params))
   it("should update a user (403 - error) on PUT ", function (done) {
     const req_data = {
       first_name: "suba mahes",
@@ -567,7 +567,7 @@ describe("Whole working process on USER SIDE", function () {
         const result = res.body;
         if (
           result.message !==
-          "sorry you don't have the access to update other's details"
+          "sorry you don't have the access to update other's details (please check the id in params)"
         ) {
           return done(new Error("error"));
         }

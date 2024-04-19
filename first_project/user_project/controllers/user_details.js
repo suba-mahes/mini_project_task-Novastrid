@@ -237,7 +237,11 @@ exports.deleteByID = async (req, res) => {
   try {
     let id = parseInt(req.params.id);
 
-    result = await user.findByPk(id);
+    result = await user.findByPk(id, {
+      where: {
+        role: 0,
+      },
+    });
 
     if (result) {
       await delete_image.delete(result.image, res);
