@@ -28,5 +28,6 @@ npm install --save-dev mocha chai supertest form-data
 
 npm install node-cron axios nodemailer ejs
 
+#for droping and creating database
 drop database user_detail_db;
 create database user_detail_db;
