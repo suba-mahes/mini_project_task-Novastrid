@@ -10,6 +10,12 @@ npm install bcrypt jsonwebtoken
 
 npm install joi
 
+npm install exceljs xlsx
+
+npm install --save-dev mocha chai supertest form-data
+
+npm install node-cron axios nodemailer ejs
+
 npm install --save-dev sequelize-cli
 
 sequelize migration:create --name create-table-name
@@ -21,12 +27,6 @@ sequelize db:seed:all
 sequelize db:seed:undo
 
 :status //this says the list of files in it.
-
-npm install exceljs xlsx
-
-npm install --save-dev mocha chai supertest form-data
-
-npm install node-cron axios nodemailer ejs
 
 # for droping and creating database
 
