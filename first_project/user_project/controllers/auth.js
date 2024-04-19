@@ -112,7 +112,6 @@ module.exports.forget_password = async (req, res) => {
       });
 
       const reset_link = `${req.protocol}://${req.get("host")}/reset-password?token=${token}`;
-      console.log(reset_link);
 
       const transporter = nodemailer.createTransport(config.mail_details);
       const email_template = fs.readFileSync(
@@ -175,7 +174,7 @@ module.exports.reset_password = async (req, res) => {
       await data.update({ password: password });
       await data.save();
 
-      //            const token = jwt.sign({ email_id:data.email_id, role:data.role, user_id:data.user_id }, config.secret_key, { expiresIn: '1h' });
+      // const token = jwt.sign({ email_id:data.email_id, role:data.role, user_id:data.user_id }, config.secret_key, { expiresIn: '1h' });
 
       const login_url = `${req.protocol}://${req.get("host")}/login`;
 

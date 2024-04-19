@@ -27,3 +27,6 @@ npm install exceljs xlsx
 npm install --save-dev mocha chai supertest form-data
 
 npm install node-cron axios nodemailer ejs
+
+drop database user_detail_db;
+create database user_detail_db;

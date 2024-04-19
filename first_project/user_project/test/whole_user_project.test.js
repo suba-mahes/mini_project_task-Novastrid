@@ -23,6 +23,11 @@ afterEach(function (done) {
   done();
 });
 
+before(function (done) {
+  console.log("\n\n Completed running all the TEST CASES");
+  done();
+});
+
 let password = "INSU@0418";
 let user_token, admin_token;
 let id;
@@ -1192,7 +1197,6 @@ describe("Whole working process on ADMIN SIDE", function () {
       .attach("image", file_path)
       .expect(401)
       .end(function (err, res) {
-        console.log(err);
         if (err) return done(res.body || err);
 
         if (!res.body || typeof res.body !== "object") {
