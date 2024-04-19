@@ -1,4 +1,4 @@
-# Novastrid-NodeJS-sandbox
+# Novastrid-NodeJS-mini_project
 
 express file-name
 
