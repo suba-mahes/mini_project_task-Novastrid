@@ -846,7 +846,6 @@ describe("Whole working process on ADMIN SIDE", function () {
   it("welcome page - (401-error token is not provided)", function (done) {
     request(app)
       .get("/users/welcome")
-      //.set('Authorization', `Bearer ${}`)
       .expect(401)
       .end(function (err, res) {
         if (err) return done(res.body || err);
