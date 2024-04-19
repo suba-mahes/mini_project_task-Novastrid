@@ -157,6 +157,32 @@ module.exports.update_user_profile_image = async (req, res, next) => {
   }
 };
 
+module.exports.update_admin_profile_image = async (req, res, next) => {
+  try {
+    const req_data = req.data;
+
+    if (req_data.role != 1) {
+      if (req.file && req.file.path) {
+        try {
+          await delete_image.delete(req.file.path, res);
+        } catch (error) {
+          display.end_result(res, err.status || 500, {
+            message: error.message || "Some error occurred.",
+          });
+        }
+      }
+
+      display.end_result(res, 401, {
+        message: "you do not have access for this page",
+      });
+    } else {
+      next();
+    }
+  } catch (error) {
+    end_error_result(res, error);
+  }
+};
+
 const end_error_result = (res, error) => {
   display.end_result(res, error.status || 500, {
     message: error.message || "Some error occurred.",

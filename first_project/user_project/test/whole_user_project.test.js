@@ -32,9 +32,10 @@ let password = "INSU@0418";
 let user_token, admin_token;
 let id;
 const fake_id = 122;
+const file_path = "C:/Users/MY PC/Desktop/inba/vietnam - flag.png";
+const update_image_file_path = "C:/Users/MY PC/Desktop/inba/srilanka - flag.png";
 
 describe("register a user", function () {
-  const file_path = "C:/Users/MY PC/Desktop/inba/vietnam - flag.png";
   it("should register a user on post ", function (done) {
     request(app)
       .post(`/users/register`)
@@ -679,13 +680,11 @@ describe("Whole working process on USER SIDE", function () {
 
   //updating the user profile image
   it("should update the user profile on PUT method ", function (done) {
-    const file_path = "C:/Users/MY PC/Desktop/inba/srilanka - flag.png";
-
     request(app)
       .put(`/users/update-user-profile-image`)
       .set("Authorization", `Bearer ${user_token}`)
       .set("Content-Type", "multipart/form-data")
-      .attach("image", file_path)
+      .attach("image", update_image_file_path)
       .expect(200)
       .end(function (err, res) {
         if (err) return done(res.body || err);
@@ -839,7 +838,6 @@ describe("unit tests with active status of user", function () {
         done();
       });
   }).timeout(50000);
-
 });
 
 describe("Whole working process on ADMIN SIDE", function () {
@@ -1146,13 +1144,11 @@ describe("Whole working process on ADMIN SIDE", function () {
 
   //updating the user profile image (401 error)
   it("should update the user profile (401 error - you do not have access for this page) on PUT method ", function (done) {
-    const file_path = "C:/Users/MY PC/Desktop/inba/srilanka - flag.png";
-
     request(app)
       .put(`/users/update-user-profile-image`)
       .set("Authorization", `Bearer ${admin_token}`)
       .set("Content-Type", "multipart/form-data")
-      .attach("image", file_path)
+      .attach("image", update_image_file_path)
       .expect(401)
       .end(function (err, res) {
         if (err) return done(res.body || err);

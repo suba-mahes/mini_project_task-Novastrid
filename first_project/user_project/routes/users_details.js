@@ -82,6 +82,14 @@ router.put(
   users_detail.updateProfileImage
 );
 
+router.put(
+  "/update-admin-profile-image",
+  upload.single("image"),
+  auth_validation.authenticate_token,
+  user_details_middleware.update_admin_profile_image,
+  users_detail.updateProfileImage
+);
+
 router.delete(
   "/delete-user-by-id/:id",
   auth_validation.authenticate_token,
