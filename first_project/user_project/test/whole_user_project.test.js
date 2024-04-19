@@ -840,47 +840,6 @@ describe("unit tests with active status of user", function () {
       });
   }).timeout(50000);
 
-  // //updating  (403 - error sorry you don't have the access to update these details)
-  // it('should update a user (403 - error) on PUT ', function(done) {
-  //     const req_data = {
-  //         "first_name": "suba mahes",
-  //         "last_name": "inba",
-  //         "gender": "male",
-  //         "d_o_b": "2001-01-01",
-  //         "address": {
-  //             "address1": "1659 ewsb",
-  //             "address2": "thb colon,villapuram",
-  //             "city": "Madurai",
-  //             "state": "Tamil nadu",
-  //             "country": "Ind"
-  //         },
-  //         "family_details":{
-  //             "gardian_name": "inba",
-  //             "mother_name": "kane",
-  //             "gardian_occupation": "off",
-  //             "mother_occupation": "hwhouse wife"
-  //         }
-  //     }
-  //     request(app)
-  //         .put(`/users/update-user/${id}`)
-  //         .set('Authorization', `Bearer ${user_token}`)
-  //         .send(req_data)
-  //         .expect(403)
-  //         .end(function(err, res) {
-  //             if(err) return done(res.body || err);
-
-  //             if (!res.body || typeof res.body !== 'object') {
-  //                 return done(new Error('Response body is not an object'));
-  //             }
-
-  //             const result = res.body;
-  //             if(result.message !== "sorry you don't have the access to update these details"){
-  //                 return done(new Error('error'));
-  //             }
-
-  //             done();
-  //         });
-  // });
 });
 
 describe("Whole working process on ADMIN SIDE", function () {
