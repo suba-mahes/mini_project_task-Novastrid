@@ -42,7 +42,8 @@
 						}
 					}
 				},
-				"url": "{{url}}{{user}}/login"
+				"url": "{{url}}{{user}}/login",
+				"description": "This is to login using email id and password"
 			},
 			"response": []
 		},
@@ -393,6 +394,31 @@
 					]
 				},
 				"url": "{{url}}{{user}}/update-user-profile-image"
+			},
+			"response": []
+		},
+		{
+			"name": "admin-profile-image-update",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{token}}"
+					}
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/C:/Users/MY PC/Desktop/inba/user_project/admin2.png"
+						}
+					]
+				},
+				"url": "{{url}}{{user}}/update-admin-profile-image"
 			},
 			"response": []
 		},
